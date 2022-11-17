@@ -255,6 +255,19 @@ export default {
       {
         this.$emit('input', this.formData);
       }
+    },
+    value:{
+      deep: true,
+      handler: function() {
+        this.consoKwHp = this.value.consoKwHp;
+        this.consoKwHc = this.value.consoKwHc;
+        this.chargesTva5EurosAboHp = this.value.chargesTva5EurosAboHp;
+        this.chargesTva5EurosContribAchemElec = this.value.chargesTva5EurosContribAchemElec;
+        this.chargesTva20TaxeConsoFinale = this.value.chargesTva20TaxeConsoFinale;
+        this.chargesTva20ContribServPub = this.value.chargesTva20ContribServPub;
+        this.prixKwHp = this.value.prixKwHp;
+        this.prixKwHc = this.value.prixKwHc;
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import PageOcr from '../components/pages/test-ocr.vue'
+import PageAccueil from '../components/pages/accueil.vue'
 import PageSaisie from '../components/pages/saisie.vue'
 
 Vue.use(VueRouter)
@@ -12,7 +12,7 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'home',
-      component: PageOcr,
+      component: PageAccueil,
       meta: {nom: "Accueil"}
     },
     {

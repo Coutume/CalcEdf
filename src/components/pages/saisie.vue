@@ -25,6 +25,12 @@
         >
           Voir le résultat précédent
         </v-btn>
+        <v-btn
+            text
+            @click="dialogOcr = true"
+        >
+          Reconnaissance facture
+        </v-btn>
       </v-col>
     </v-row>
     <v-dialog
@@ -71,6 +77,11 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+        v-model="dialogOcr"
+    >
+      <ocr-facture @hideDialogOcr="onDialogOcrHide"></ocr-facture>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -80,10 +91,11 @@ import { mapStores } from 'pinia'
 import useMainStore from "@/stores/mainStore.js";
 import RecapCompteurs from "@/components/recap-compteurs.vue";
 import RecapPersonnes from "@/components/recap-personnes.vue";
+import OcrFacture from "@/components/ocr-facture.vue";
 
 export default {
   name: "saisie",
-  components: {RecapPersonnes, RecapCompteurs, SaisieFacture},
+  components: {OcrFacture, RecapPersonnes, RecapCompteurs, SaisieFacture},
   data() {
     return {
       formData: {
@@ -102,7 +114,8 @@ export default {
       formValide: false,
       recapCompteurs: [],
       recapPersonnes: [],
-      dialogResultat: false
+      dialogResultat: false,
+      dialogOcr: false
     }
   },
   computed: {
@@ -146,6 +159,21 @@ export default {
       {
         this.recapCompteurs.splice(0);
         this.recapPersonnes.splice(0);
+      }
+    },
+    onDialogOcrHide: function(dialogData)
+    {
+      this.dialogOcr = false;
+      if(dialogData.getData)
+      {
+        this.formData.consoKwHc = dialogData.data.kwHc;
+        this.formData.prixKwHc = dialogData.data.prixKwHc;
+        this.formData.consoKwHp =dialogData.data.kwHp;
+        this.formData.prixKwHp = dialogData.data.prixKwHp;
+        this.formData.chargesTva5EurosAboHp = dialogData.data.tva5Abo;
+        this.formData.chargesTva5EurosContribAchemElec = dialogData.data.tva5Contrib;
+        this.formData.chargesTva20TaxeConsoFinale = dialogData.data.tva20ConsoFinale;
+        this.formData.chargesTva20ContribServPub = dialogData.data.tva20ContribAchem;
       }
     },
     calculer: function()
@@ -256,6 +284,10 @@ export default {
         personne : personne,
         total: 0
       }
+    },
+    onOcrFinished: function(valeursOcr)
+    {
+
     }
   }
 }
