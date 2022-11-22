@@ -1,0 +1,4 @@
+runtime: php81
+handlers:
+  - url: /
+    static_dir: dist
