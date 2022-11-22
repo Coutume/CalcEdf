@@ -14,11 +14,10 @@
                 label="Sélectionner la photo de la facture"
                 :loading="reconnaissanceEnCours"
                 :messages="msgReconnaissanceEncours"
-                @change="onFileChanged"
             ></v-file-input>
           </v-col>
           <v-col>
-            <v-btn dark v-on:click="recognize" :disabled="imageFacture == null">Lancer la reconnaissance</v-btn>
+            <v-btn dark v-on:click="recognize">Lancer la reconnaissance</v-btn>
           </v-col>
         </v-row>
         <v-row>
@@ -67,7 +66,6 @@ export default {
       texte: null,
       hocr: null,
       fichierFacture: null,
-      imageFacture: null,
       reconnaissanceEnCours: false,
       reconnu: false
     }
@@ -127,35 +125,14 @@ export default {
       await worker.initialize('fra', OEM.LSTM_ONLY);
       await worker.setParameters({
         tessedit_pageseg_mode: PSM.SINGLE_BLOCK,
+        tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz,.%€() éàèê-'
       });
-      const { data: { text, hocr } } = await worker.recognize(this.imageFacture);
+      const { data: { text, hocr } } = await worker.recognize(this.fichierFacture);
       this.texte = text;
       this.hocr = hocr;
       this.reconnaissanceEnCours = false;
       this.reconnu = true;
       console.log(text);
-    },
-    onFileChanged: function() {
-      const offscreen_canvas = new OffscreenCanvas(0, 0);
-      const offscreen_canvas_context = offscreen_canvas.getContext("2d");
-
-      var file = this.fichierFacture;
-      if (file == undefined) return;
-      var reader = new FileReader();
-      reader.onload = (event) => {
-        const reader_image = event.target.result;
-        const image = new Image();
-        image.onload =  () => {
-          offscreen_canvas.width = image.width;
-          offscreen_canvas.height = image.height;
-          offscreen_canvas_context.drawImage(image, 0, 0);
-          offscreen_canvas.convertToBlob().then((blob) => {
-            this.imageFacture = blob;
-          });
-        };
-        image.src = reader_image;
-      };
-      reader.readAsDataURL(file);
     }
   }
 }

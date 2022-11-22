@@ -134,7 +134,8 @@
               <v-container class="no-padding">
                 <v-row dense>
                   <v-col
-                      cols="6"
+                      cols="12"
+                      lg="6"
                   >
                     <v-text-field
                         v-model="chargesTva5EurosAboHp"
@@ -146,7 +147,8 @@
                     ></v-text-field>
                   </v-col>
                   <v-col
-                      cols="6"
+                      cols="12"
+                      lg="6"
                   >
                     <v-text-field
                         v-model="chargesTva5EurosContribAchemElec"
@@ -158,7 +160,8 @@
                     ></v-text-field>
                   </v-col>
                   <v-col
-                      cols="6"
+                      cols="12"
+                      lg="6"
                   >
                     <v-text-field
                         v-model="chargesTva20TaxeConsoFinale"
@@ -170,7 +173,8 @@
                     ></v-text-field>
                   </v-col>
                   <v-col
-                      cols="6"
+                      cols="12"
+                      lg="6"
                   >
                     <v-text-field
                         v-model="chargesTva20ContribServPub"
