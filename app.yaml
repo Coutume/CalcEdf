@@ -1,4 +1,12 @@
 runtime: php81
+entrypoint: serve public/index.php
 handlers:
+  - url: /api
+    script: auto
+
+  - url: /$
+    static_files: dist/index.html
+    upload: dist/index.html
+
   - url: /
     static_dir: dist
