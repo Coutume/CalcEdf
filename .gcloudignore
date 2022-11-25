@@ -16,3 +16,7 @@
 # PHP Composer dependencies:
 /vendor/
 /node_modules/
+
+# Dossier propre aux IDEs
+/.idea
+/.vscode

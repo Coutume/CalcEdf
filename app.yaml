@@ -1,7 +1,7 @@
 runtime: php81
 entrypoint: serve public/index.php
 handlers:
-  - url: /api
+  - url: /api/.*
     script: auto
 
   - url: /$
