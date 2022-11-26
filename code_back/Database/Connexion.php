@@ -3,6 +3,9 @@
 namespace App\Database;
 
 use App\Config\Configuration;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\ORMSetup;
 use PDO;
 use PDOException;
 use TypeError;
@@ -65,5 +68,27 @@ class Connexion
                 )
             );
         }
+    }
+
+    /**
+     * @return ?EntityManager
+     * @throws ORMException
+     */
+    public function initEntityManager() : ?EntityManager
+    {
+        $config = ORMSetup::createAttributeMetadataConfiguration(
+            paths: array(__DIR__."/../Entite"),
+            isDevMode: true,
+        );
+
+        $conn = array(
+            'driver' => 'pdo_pgsql',
+            'user' => $this->user,
+            'password' => $this->password,
+            'host' => $this->hostname,
+            'dbname' => $this->db
+        );
+
+        return EntityManager::create($conn, $config);
     }
 }
