@@ -13,19 +13,8 @@ $container = new Container();
 $app = AppFactory::createFromContainer($container);
 $app->setBasePath('/public');
 
-$app->get('/', function (Request $request, Response $response) {
-    $response->getBody()->write("shigoto wo hajimemashou !");
-    return $response;
-});
+$app->get('/', ['\App\Controleur\MainController', 'home']);
 
-$app->get('/test', function (Request $request, Response $response, $args)
-{
-    $connexion = $this->get('\App\Database\Connexion');
-    $conn = $connexion->getConnexion();
-    $response->getBody()->write("Premier webservice");
-
-
-    return $response;
-});
+$app->get('/test', ['\App\Controleur\MainController', 'test']);
 
 $app->run();
