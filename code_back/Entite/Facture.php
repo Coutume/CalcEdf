@@ -195,4 +195,22 @@ class Facture
     {
         $this->chargesTva20ContribServPub = $chargesTva20ContribServPub;
     }
+
+    public static function init($factureJson)
+    {
+        $facture = new self();
+
+        $facture->setDate(\DateTime::createFromFormat('Y-m-d', $factureJson->saisies->dateFacture)
+            ->setTime(0, 0, 0));
+        $facture->setConsoKwHp($factureJson->saisies->consoKwHp);
+        $facture->setConsoKwHc($factureJson->saisies->consoKwHc);
+        $facture->setPrixKwHp($factureJson->saisies->prixKwHp);
+        $facture->setPrixKwHc($factureJson->saisies->prixKwHc);
+        $facture->setChargesTva5EurosAboHp($factureJson->saisies->chargesTva5EurosAboHp);
+        $facture->setChargesTva5EurosContribAchemElec($factureJson->saisies->chargesTva5EurosContribAchemElec);
+        $facture->setChargesTva20TaxeConsoFinale($factureJson->saisies->chargesTva20TaxeConsoFinale);
+        $facture->setChargesTva20ContribServPub($factureJson->saisies->chargesTva20ContribServPub);
+
+        return $facture;
+    }
 }

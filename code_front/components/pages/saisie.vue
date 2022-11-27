@@ -63,7 +63,7 @@
           <v-btn
               color="primary"
               text
-              @click="dialogResultat = false"
+              @click="validerFacture()"
           >
             Valider
           </v-btn>
@@ -148,9 +148,21 @@ export default {
         return chargesTva20TotalTtc / this.nbPartTaxes;
       }
       return null;
+    },
+    facture: function() {
+      return {
+        saisies: this.formData,
+        compteurs: this.recapCompteurs,
+        personnes: this.recapPersonnes,
+      }
     }
   },
   methods: {
+    validerFacture: function()
+    {
+      this.dialogResultat = false;
+      this.mainStore.ajouterFacture(this.facture);
+    },
     onFormValide: function(isValid)
     {
       this.formValide = isValid;

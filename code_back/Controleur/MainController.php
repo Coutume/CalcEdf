@@ -14,16 +14,21 @@ class MainController
     {
         $this->connHelper = $connexion;
     }
+
     public function home(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $response->getBody()->write("API de gestion des factures.");
         return $response;
     }
 
-
     public function test(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $this->connHelper->getConnexion();
+        return $response;
+    }
+
+    public function listerEnTetes(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    {
         return $response;
     }
 }

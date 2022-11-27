@@ -1,20 +1,31 @@
 <?php
 
+use App\Config\ContainerConfig;
 use DI\Container;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Factory\AppFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-// Create Container using PHP-DI
-$container = new Container();
+// initialisation du conteneur de dépendances
+$container = ContainerConfig::initContainer();
 
+// initialisation de l'application
 $app = AppFactory::createFromContainer($container);
 $app->setBasePath('/public');
 
+$app->add(function (Request $request, RequestHandler $handler) {
+    $response = $handler->handle($request);
+    return $response->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Headers', '*');
+});
 $app->get('/', ['\App\Controleur\MainController', 'home']);
-
 $app->get('/test', ['\App\Controleur\MainController', 'test']);
+
+$app->post('/facture/ajouter', ['\App\Controleur\FactureController', 'ajouter']);
+$app->options('/facture/ajouter', ['\App\Controleur\MainController', 'listerEnTetes']);
 
 $app->run();

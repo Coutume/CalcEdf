@@ -1,4 +1,5 @@
 import {defineStore} from 'pinia'
+import axios from 'axios'
 
 export default defineStore('main', {
     state: () => (
@@ -56,9 +57,18 @@ export default defineStore('main', {
         }
     ),
     getters: {
-        doubleCount: (state) => state.count * 2,
+
     },
     actions: {
-
+        async ajouterFacture(facture) {
+            try {
+                console.log(facture);
+                let data = await axios.post('http://localhost:80/public/facture/ajouter', facture);
+                console.log(data);
+            } catch (error) {
+                console.log(error)
+                return error
+            }
+        },
     },
 })
