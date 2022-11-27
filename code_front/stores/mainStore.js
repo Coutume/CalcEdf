@@ -63,7 +63,7 @@ export default defineStore('main', {
         async ajouterFacture(facture) {
             try {
                 console.log(facture);
-                let data = await axios.post(import.meta.env + 'facture/ajouter', facture);
+                let data = await axios.post(import.meta.env.VITE_URL_API + 'facture/ajouter', facture);
                 console.log(data);
             } catch (error) {
                 console.log(error)
