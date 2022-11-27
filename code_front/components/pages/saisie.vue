@@ -162,6 +162,7 @@ export default {
     {
       this.dialogResultat = false;
       this.mainStore.ajouterFacture(this.facture);
+      console.log(import.meta.env);
     },
     onFormValide: function(isValid)
     {
