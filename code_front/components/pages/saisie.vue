@@ -89,6 +89,7 @@
 import SaisieFacture from "@/components/saisie-facture.vue";
 import { mapStores } from 'pinia'
 import useMainStore from "@/stores/mainStore.js";
+import useMessageStore from "@/stores/messageStore.js";
 import RecapCompteurs from "@/components/recap-compteurs.vue";
 import RecapPersonnes from "@/components/recap-personnes.vue";
 import OcrFacture from "@/components/ocr-facture.vue";
@@ -120,6 +121,7 @@ export default {
   },
   computed: {
     ...mapStores(useMainStore),
+    ...mapStores(useMessageStore),
     nbPartTaxes: function() {
       return this.mainStore.compteurs.filter(c => c.partageTaxes === true).length;
     },
@@ -191,6 +193,7 @@ export default {
     },
     calculer: function()
     {
+      this.messageStore.addMessage("Calcul en cours...");
       let compteurs = this.mainStore.compteurs;
       this.recapCompteurs.splice(0);
 

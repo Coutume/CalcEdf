@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia'
-import axios from 'axios'
+import axios from '@/request/axios.js'
+import useLoadingStore from '@/stores/loadingStore.js'
 
 export default defineStore('main', {
     state: () => (
@@ -60,14 +61,18 @@ export default defineStore('main', {
 
     },
     actions: {
-        async ajouterFacture(facture) {
-            try {
-                console.log(facture);
+        async ajouterFacture(facture)
+        {
+            const loadingStore = useLoadingStore();
+            try
+            {
+                loadingStore.beginLoading('Ajout de la facture...');
                 let data = await axios.post(import.meta.env.VITE_URL_API + 'facture/ajouter', facture);
                 console.log(data);
-            } catch (error) {
-                console.log(error)
-                return error
+            }
+            finally
+            {
+                loadingStore.finishLoading('Ajout de la facture...');
             }
         },
     },

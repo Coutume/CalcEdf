@@ -13,8 +13,8 @@
     <v-navigation-drawer
         v-model="menuPrincipal"
         absolute
-        bottom
         temporary
+        app
     >
       <v-list
           nav
@@ -33,17 +33,62 @@
     <v-main>
       <router-view></router-view>
     </v-main>
+    <v-dialog
+        v-model="loadingStore.loadInProcess"
+        persistent
+    >
+      <v-card>
+        <v-card-title class="text-h5">
+          Chargement en cours
+        </v-card-title>
+        <v-card-text>
+          <ul>
+            <li v-for="(chrg, index) in loadingStore.process" :key="index">{{ chrg }}</li>
+          </ul>
+        </v-card-text>
+        <v-card-actions>
+          <v-progress-linear
+              indeterminate
+          ></v-progress-linear>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-snackbar
+        v-for="(msg, index) in messageStore.messages" :key="index"
+        v-model="msg.display"
+        :color="msg.color"
+    >
+      {{ msg.texte }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+            text
+            v-bind="attrs"
+            @click="msg.display = false"
+        >
+          Fermer
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
 <script>
+import {mapStores} from "pinia";
+import useLoadingStore from "@/stores/loadingStore.js";
+import useMessageStore from "@/stores/messageStore.js";
+
 export default {
   name: "principale",
   data() {
     return {
       menuPrincipal: false,
-      listeMenuLien: null,
+      listeMenuLien: null
     }
+  },
+  computed: {
+    ...mapStores(useLoadingStore),
+    ...mapStores(useMessageStore)
   }
 }
 </script>
