@@ -1,6 +1,7 @@
 <?php
 
 use App\Config\ContainerConfig;
+use App\Controleur\MainController;
 use DI\Container;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -16,6 +17,8 @@ $container = ContainerConfig::initContainer();
 // initialisation de l'application
 $app = AppFactory::createFromContainer($container);
 $app->setBasePath('/public');
+
+MainController::initErrorRoutingMiddleware($app);
 
 $app->add(function (Request $request, RequestHandler $handler) {
     $response = $handler->handle($request);

@@ -1,6 +1,7 @@
 import {defineStore} from 'pinia'
 import axios from '@/request/axios.js'
 import useLoadingStore from '@/stores/loadingStore.js'
+import useMessageStore from '@/stores/messageStore.js'
 
 export default defineStore('main', {
     state: () => (
@@ -64,11 +65,12 @@ export default defineStore('main', {
         async ajouterFacture(facture)
         {
             const loadingStore = useLoadingStore();
+            const messageStore = useMessageStore();
             try
             {
                 loadingStore.beginLoading('Ajout de la facture...');
                 let data = await axios.post(import.meta.env.VITE_URL_API + 'facture/ajouter', facture);
-                console.log(data);
+                messageStore.addMessage("Facture ajoutée.", false, true);
             }
             finally
             {

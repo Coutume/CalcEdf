@@ -28,9 +28,7 @@ class FactureController
         $facture = Facture::init($donneesFacture);
         $this->entityManager->persist($facture);
         $this->entityManager->flush();
-        return $response
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', '*');
+        return $response;
     }
 
     public function modifier(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
