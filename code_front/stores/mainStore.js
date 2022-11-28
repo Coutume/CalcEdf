@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import axios from '@/request/axios.js'
+import axios from 'axios'
 import useLoadingStore from '@/stores/loadingStore.js'
 import useMessageStore from '@/stores/messageStore.js'
 

@@ -25,8 +25,13 @@ class FactureController
     public function ajouter(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $donneesFacture = json_decode($request->getBody()->getContents());
+
+        if(empty($donneesFacture))
+        {
+            throw new \Exception("Les données sur la facture sont manquants.");
+        }
+
         $facture = Facture::init($donneesFacture);
-        throw new \Exception("Impossible d'enregistrer la facture.");
         $this->entityManager->persist($facture);
         $this->entityManager->flush();
         return $response;
