@@ -57,6 +57,7 @@
         v-for="(msg, index) in messageStore.messages" :key="index"
         v-model="msg.display"
         :color="msg.color"
+        :timeout="msg.dismissible ? 2000 : -1"
     >
       {{ msg.texte }}
 

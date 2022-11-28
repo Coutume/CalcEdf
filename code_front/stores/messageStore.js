@@ -9,8 +9,8 @@ export default defineStore('message', {
     getters: {
     },
     actions: {
-        addMessage(message, error = false) {
-            this.messages.push({texte: message, display: true, color: error ? 'red accent-2' : ''});
+        addMessage(message, error = false, dismissible = true) {
+            this.messages.push({texte: message, display: true, dismissible: dismissible, color: error ? 'red accent-2' : ''});
         }
     },
 })
