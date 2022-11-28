@@ -3,6 +3,7 @@
 namespace App\Config;
 
 use Exception;
+use Symfony\Component\Dotenv\Dotenv;
 
 class Configuration
 {
@@ -10,16 +11,15 @@ class Configuration
 
     public function __construct()
     {
-        $this->config = parse_ini_file(__DIR__ . '/../../config/app.ini');
+        $isDev = str_contains($_SERVER['SERVER_NAME'], 'localhost');
 
-        if($this->config === false)
-        {
-            throw new Exception("Fichier de configuration app.ini introuvable");
-        }
+        $fichierEnv = '.env.' . ($isDev ? 'development' : 'production');
+        $dotenv = new Dotenv();
+        $dotenv->loadEnv(__DIR__ . '/../../' . $fichierEnv);
     }
 
     public function getConfig($cle)
     {
-        return $this->config[$cle];
+        return $_ENV[$cle];
     }
 }

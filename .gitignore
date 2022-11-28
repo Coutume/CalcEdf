@@ -100,3 +100,5 @@ fabric.properties
 
 /vendor/
 /config/app.ini
+.env.*
+!.env.dist
