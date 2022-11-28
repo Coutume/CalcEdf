@@ -52,7 +52,6 @@ class MainController
             bool $logErrorDetails,
             ?LoggerInterface $logger = null
         ) use ($app) {
-            $logger->error($exception->getMessage());
 
             $payload = ['error' => true, 'message' => $exception->getMessage()];
 

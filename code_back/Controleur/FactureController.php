@@ -26,6 +26,7 @@ class FactureController
     {
         $donneesFacture = json_decode($request->getBody()->getContents());
         $facture = Facture::init($donneesFacture);
+        throw new \Exception("Impossible d'enregistrer la facture.");
         $this->entityManager->persist($facture);
         $this->entityManager->flush();
         return $response;
