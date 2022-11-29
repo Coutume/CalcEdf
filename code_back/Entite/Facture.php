@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 
 #[Entity]
@@ -20,29 +21,65 @@ class Facture
     #[Column(type: 'datetime')]
     private $date;
 
+    /**
+     * @var integer
+     */
     #[Column(type: 'integer')]
     private $consoKwHp;
 
+    /**
+     * @var integer
+     */
     #[Column(type: 'integer')]
     private $consoKwHc;
 
+    /**
+     * @var float
+     */
     #[Column(type: 'float')]
     private $prixKwHp;
 
+    /**
+     * @var float
+     */
     #[Column(type: 'float')]
     private $prixKwHc;
 
+    /**
+     * @var float
+     */
     #[Column(type: 'float')]
     private $chargesTva5EurosAboHp;
 
+    /**
+     * @var float
+     */
     #[Column(type: 'float')]
     private $chargesTva5EurosContribAchemElec;
 
+    /**
+     * @var float
+     */
     #[Column(type: 'float')]
     private $chargesTva20TaxeConsoFinale;
 
+    /**
+     * @var float
+     */
+    #[Column(type: 'float')]
+    private $total;
+
+    /**
+     * @var float
+     */
     #[Column(type: 'float')]
     private $chargesTva20ContribServPub;
+
+    #[OneToMany(mappedBy: 'facture', targetEntity: 'App\Entite\ConsommationCompteur')]
+    private $consommationsCompteur;
+
+    #[OneToMany(mappedBy: 'facture', targetEntity: '\App\Entite\ConsommationPersonne')]
+    private $consommationsPersonne;
 
     /**
      * @return mixed
@@ -194,6 +231,54 @@ class Facture
     public function setChargesTva20ContribServPub($chargesTva20ContribServPub): void
     {
         $this->chargesTva20ContribServPub = $chargesTva20ContribServPub;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotal(): float
+    {
+        return $this->total;
+    }
+
+    /**
+     * @param float $total
+     */
+    public function setTotal(float $total): void
+    {
+        $this->total = $total;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConsommationsCompteur()
+    {
+        return $this->consommationsCompteur;
+    }
+
+    /**
+     * @param mixed $consommationsCompteur
+     */
+    public function setConsommationsCompteur($consommationsCompteur): void
+    {
+        $this->consommationsCompteur = $consommationsCompteur;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConsommationsPersonne()
+    {
+        return $this->consommationsPersonne;
+    }
+
+    /**
+     * @param mixed $consommationsPersonne
+     */
+    public function setConsommationsPersonne($consommationsPersonne): void
+    {
+        $this->consommationsPersonne = $consommationsPersonne;
     }
 
     public static function init($factureJson)

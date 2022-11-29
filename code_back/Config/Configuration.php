@@ -11,7 +11,7 @@ class Configuration
 
     public function __construct()
     {
-        $isDev = str_contains($_SERVER['SERVER_NAME'], 'localhost');
+        $isDev = !isset($_SERVER['SERVER_NAME']) || str_contains($_SERVER['SERVER_NAME'], 'localhost');
 
         $fichierEnv = '.env.' . ($isDev ? 'development' : 'production');
         $dotenv = new Dotenv();
