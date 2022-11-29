@@ -2,11 +2,14 @@
 
 namespace App\Entite;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 
 #[Entity]
 class ConsommationCompteur
@@ -46,7 +49,7 @@ class ConsommationCompteur
     /**
      * @var float
      */
-    #[Column(type: 'integer')]
+    #[Column(type: 'float')]
     private $consoEuroHp;
 
     /**
@@ -59,13 +62,7 @@ class ConsommationCompteur
      * @var float
      */
     #[Column(type: 'float')]
-    private $consoEuroTotalHt;
-
-    /**
-     * @var float
-     */
-    #[Column(type: 'float')]
-    private $consoEuroTotalTtc;
+    private $consoEuroTotal;
 
     /**
      * @var float
@@ -78,6 +75,17 @@ class ConsommationCompteur
      */
     #[Column(type: 'float')]
     private $valeurPart;
+
+    /**
+     * @var DetailConsommationCompteur[]|Collection
+     */
+    #[OneToMany(mappedBy: 'consommationCompteur', targetEntity: 'App\Entite\DetailConsommationCompteur', cascade: ['persist'])]
+    private $detailsConsommationCompteur;
+
+    public function __construct()
+    {
+        $this->detailsConsommationCompteur = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -186,33 +194,17 @@ class ConsommationCompteur
     /**
      * @return float
      */
-    public function getConsoEuroTotalHt(): float
+    public function getConsoEuroTotal(): float
     {
-        return $this->consoEuroTotalHt;
+        return $this->consoEuroTotal;
     }
 
     /**
-     * @param float $consoEuroTotalHt
+     * @param float $consoEuroTotal
      */
-    public function setConsoEuroTotalHt(float $consoEuroTotalHt): void
+    public function setConsoEuroTotal(float $consoEuroTotal): void
     {
-        $this->consoEuroTotalHt = $consoEuroTotalHt;
-    }
-
-    /**
-     * @return float
-     */
-    public function getConsoEuroTotalTtc(): float
-    {
-        return $this->consoEuroTotalTtc;
-    }
-
-    /**
-     * @param float $consoEuroTotalTtc
-     */
-    public function setConsoEuroTotalTtc(float $consoEuroTotalTtc): void
-    {
-        $this->consoEuroTotalTtc = $consoEuroTotalTtc;
+        $this->consoEuroTotal = $consoEuroTotal;
     }
 
     /**
@@ -245,5 +237,32 @@ class ConsommationCompteur
     public function setValeurPart(float $valeurPart): void
     {
         $this->valeurPart = $valeurPart;
+    }
+
+    public function addDetailConsommationCompteur(DetailConsommationCompteur $detailConsommationCompteur)
+    {
+        $detailConsommationCompteur->setConsommationCompteur($this);
+        $this->detailsConsommationCompteur->add($detailConsommationCompteur);
+    }
+
+    public static function init($consommation, Compteur $compteur)
+    {
+        $conso = new self();
+
+        $conso->setCompteur($compteur);
+        $conso->setConsoKwHp($consommation->consoKwHp);
+        $conso->setConsoKwHc($consommation->consoKwHc);
+        $conso->setConsoEuroHp($consommation->consoEurosHp);
+        $conso->setConsoEuroHc($consommation->consoEurosHc);
+        $conso->setConsoEuroTotal($consommation->consoEurosTotal);
+        $conso->setTotal($consommation->total);
+        $conso->setValeurPart($consommation->valeurPart);
+
+        foreach($consommation->lignesBudgetaires as $detail)
+        {
+            $conso->addDetailConsommationCompteur(DetailConsommationCompteur::init($detail));
+        }
+
+        return $conso;
     }
 }

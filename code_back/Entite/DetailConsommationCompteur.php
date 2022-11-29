@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\ManyToOne;
 
 #[Entity]
 class DetailConsommationCompteur
@@ -29,6 +30,12 @@ class DetailConsommationCompteur
      */
     #[Column(type: 'float')]
     private $montant;
+
+    /**
+     * @var ConsommationCompteur
+     */
+    #[ManyToOne(targetEntity: 'App\Entite\ConsommationCompteur')]
+    private $consommationCompteur;
 
     /**
      * @return int
@@ -76,5 +83,31 @@ class DetailConsommationCompteur
     public function setMontant(float $montant): void
     {
         $this->montant = $montant;
+    }
+
+    /**
+     * @return ConsommationCompteur
+     */
+    public function getConsommationCompteur(): ConsommationCompteur
+    {
+        return $this->consommationCompteur;
+    }
+
+    /**
+     * @param ConsommationCompteur $consommationCompteur
+     */
+    public function setConsommationCompteur(ConsommationCompteur $consommationCompteur): void
+    {
+        $this->consommationCompteur = $consommationCompteur;
+    }
+
+    public static function init($detailJson)
+    {
+        $conso = new self();
+
+        $conso->setNom($detailJson->nom);
+        $conso->setMontant($detailJson->montant);
+
+        return $conso;
     }
 }

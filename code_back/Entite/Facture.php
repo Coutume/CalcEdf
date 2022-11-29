@@ -2,6 +2,8 @@
 
 namespace App\Entite;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -75,11 +77,23 @@ class Facture
     #[Column(type: 'float')]
     private $chargesTva20ContribServPub;
 
-    #[OneToMany(mappedBy: 'facture', targetEntity: 'App\Entite\ConsommationCompteur')]
+    /**
+     * @var Collection
+     */
+    #[OneToMany(mappedBy: 'facture', targetEntity: 'App\Entite\ConsommationCompteur', cascade: ['persist'])]
     private $consommationsCompteur;
 
-    #[OneToMany(mappedBy: 'facture', targetEntity: '\App\Entite\ConsommationPersonne')]
+    /**
+     * @var Collection
+     */
+    #[OneToMany(mappedBy: 'facture', targetEntity: '\App\Entite\ConsommationPersonne', cascade: ['persist'])]
     private $consommationsPersonne;
+
+    public function __construct()
+    {
+        $this->consommationsCompteur = new ArrayCollection();
+        $this->consommationsPersonne = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -260,9 +274,10 @@ class Facture
     /**
      * @param mixed $consommationsCompteur
      */
-    public function setConsommationsCompteur($consommationsCompteur): void
+    public function addConsommationsCompteur(ConsommationCompteur $consommationsCompteur): void
     {
-        $this->consommationsCompteur = $consommationsCompteur;
+        $consommationsCompteur->setFacture($this);
+        $this->consommationsCompteur->add($consommationsCompteur);
     }
 
     /**
@@ -276,27 +291,8 @@ class Facture
     /**
      * @param mixed $consommationsPersonne
      */
-    public function setConsommationsPersonne($consommationsPersonne): void
+    public function addConsommationsPersonne(ConsommationPersonne $consommationsPersonne): void
     {
-        $this->consommationsPersonne = $consommationsPersonne;
-    }
-
-    public static function init($factureJson)
-    {
-        $facture = new self();
-
-        $facture->setDate(\DateTime::createFromFormat('Y-m-d', $factureJson->saisies->dateFacture)
-            ->setTime(0, 0, 0));
-        $facture->setConsoKwHp($factureJson->saisies->consoKwHp);
-        $facture->setConsoKwHc($factureJson->saisies->consoKwHc);
-        $facture->setPrixKwHp(str_replace(',', '.', $factureJson->saisies->prixKwHp));
-        $facture->setPrixKwHc(str_replace(',', '.', $factureJson->saisies->prixKwHc));
-        $facture->setChargesTva5EurosAboHp(str_replace(',', '.', $factureJson->saisies->chargesTva5EurosAboHp));
-        $facture->setChargesTva5EurosContribAchemElec(str_replace(',', '.', $factureJson->saisies->chargesTva5EurosContribAchemElec));
-        $facture->setChargesTva20TaxeConsoFinale(str_replace(',', '.', $factureJson->saisies->chargesTva20TaxeConsoFinale));
-        $facture->setChargesTva20ContribServPub(str_replace(',', '.', $factureJson->saisies->chargesTva20ContribServPub));
-        $facture->setTotal(str_replace(',', '.', $factureJson->saisies->total));
-
-        return $facture;
+        $this->consommationsPersonne->add($consommationsPersonne);
     }
 }
