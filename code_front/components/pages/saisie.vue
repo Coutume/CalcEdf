@@ -110,7 +110,8 @@ export default {
         chargesTva20TaxeConsoFinale: '0',
         chargesTva20ContribServPub: '0',
         prixKwHp: '0',
-        prixKwHc: '0'
+        prixKwHc: '0',
+        total: 0
       },
       formValide: false,
       recapCompteurs: [],
@@ -234,6 +235,7 @@ export default {
 
       this.recapCompteurs.push(recapCompteurPrincipal, recapCompteurPantaRei, recapCompteurPiscine);
       this.creerRecapsPersonne();
+      this.formData.total = this.recapCompteurs.reduce((prev, rc) => prev + rc.total, 0);
 
       this.dialogResultat = true;
     },

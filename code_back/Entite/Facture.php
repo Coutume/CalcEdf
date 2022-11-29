@@ -289,12 +289,13 @@ class Facture
             ->setTime(0, 0, 0));
         $facture->setConsoKwHp($factureJson->saisies->consoKwHp);
         $facture->setConsoKwHc($factureJson->saisies->consoKwHc);
-        $facture->setPrixKwHp($factureJson->saisies->prixKwHp);
-        $facture->setPrixKwHc($factureJson->saisies->prixKwHc);
-        $facture->setChargesTva5EurosAboHp($factureJson->saisies->chargesTva5EurosAboHp);
-        $facture->setChargesTva5EurosContribAchemElec($factureJson->saisies->chargesTva5EurosContribAchemElec);
-        $facture->setChargesTva20TaxeConsoFinale($factureJson->saisies->chargesTva20TaxeConsoFinale);
-        $facture->setChargesTva20ContribServPub($factureJson->saisies->chargesTva20ContribServPub);
+        $facture->setPrixKwHp(str_replace(',', '.', $factureJson->saisies->prixKwHp));
+        $facture->setPrixKwHc(str_replace(',', '.', $factureJson->saisies->prixKwHc));
+        $facture->setChargesTva5EurosAboHp(str_replace(',', '.', $factureJson->saisies->chargesTva5EurosAboHp));
+        $facture->setChargesTva5EurosContribAchemElec(str_replace(',', '.', $factureJson->saisies->chargesTva5EurosContribAchemElec));
+        $facture->setChargesTva20TaxeConsoFinale(str_replace(',', '.', $factureJson->saisies->chargesTva20TaxeConsoFinale));
+        $facture->setChargesTva20ContribServPub(str_replace(',', '.', $factureJson->saisies->chargesTva20ContribServPub));
+        $facture->setTotal(str_replace(',', '.', $factureJson->saisies->total));
 
         return $facture;
     }
