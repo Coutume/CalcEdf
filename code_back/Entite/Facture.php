@@ -2,6 +2,7 @@
 
 namespace App\Entite;
 
+use App\Config\ValidationMessage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -9,10 +10,12 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
-use Doctrine\ORM\Mapping\Table;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Positive;
+use Symfony\Component\Validator\Constraints\PositiveOrZero;
+use Symfony\Component\Validator\Constraints\Type;
 
 #[Entity]
-#[Table]
 class Facture
 {
     #[Id]
@@ -21,72 +24,96 @@ class Facture
     private $id;
 
     #[Column(type: 'datetime')]
+    #[NotNull(message: ValidationMessage::DATE_RENSEIGNEE)]
+    #[Type(type: '\DateTime', message: ValidationMessage::DATE_RENSEIGNEE)]
     private $date;
 
     /**
      * @var integer
      */
     #[Column(type: 'integer')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[Type(type: 'integer', message: ValidationMessage::KW_NOMBRE)]
+    #[Positive(message: ValidationMessage::KW_NOMBRE)]
     private $consoKwHp;
 
     /**
      * @var integer
      */
     #[Column(type: 'integer')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[Type(type: 'integer', message: ValidationMessage::KW_NOMBRE)]
+    #[PositiveOrZero(message: ValidationMessage::KW_NOMBRE)]
     private $consoKwHc;
 
     /**
      * @var float
      */
     #[Column(type: 'float')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     private $prixKwHp;
 
     /**
      * @var float
      */
     #[Column(type: 'float')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     private $prixKwHc;
 
     /**
      * @var float
      */
     #[Column(type: 'float')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     private $chargesTva5EurosAboHp;
 
     /**
      * @var float
      */
     #[Column(type: 'float')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     private $chargesTva5EurosContribAchemElec;
 
     /**
      * @var float
      */
     #[Column(type: 'float')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     private $chargesTva20TaxeConsoFinale;
 
     /**
      * @var float
      */
     #[Column(type: 'float')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     private $total;
 
     /**
      * @var float
      */
     #[Column(type: 'float')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     private $chargesTva20ContribServPub;
 
     /**
      * @var Collection
      */
     #[OneToMany(mappedBy: 'facture', targetEntity: 'App\Entite\ConsommationCompteur', cascade: ['persist'])]
+    #[NotNull(message: ValidationMessage::VALEUR_TECH)]
     private $consommationsCompteur;
 
     /**
      * @var Collection
      */
     #[OneToMany(mappedBy: 'facture', targetEntity: '\App\Entite\ConsommationPersonne', cascade: ['persist'])]
+    #[NotNull(message: ValidationMessage::VALEUR_TECH)]
     private $consommationsPersonne;
 
     public function __construct()
@@ -258,7 +285,7 @@ class Facture
     /**
      * @param float $total
      */
-    public function setTotal(float $total): void
+    public function setTotal($total): void
     {
         $this->total = $total;
     }
@@ -293,6 +320,7 @@ class Facture
      */
     public function addConsommationsPersonne(ConsommationPersonne $consommationsPersonne): void
     {
+        $consommationsPersonne->setFacture($this);
         $this->consommationsPersonne->add($consommationsPersonne);
     }
 }

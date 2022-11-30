@@ -154,7 +154,7 @@ export default {
     },
     facture: function() {
       return {
-        saisies: this.formData,
+        saisies: this.formatFormData(),
         compteurs: this.recapCompteurs,
         personnes: this.recapPersonnes,
       }
@@ -190,6 +190,22 @@ export default {
         this.formData.chargesTva5EurosContribAchemElec = dialogData.data.tva5Contrib;
         this.formData.chargesTva20TaxeConsoFinale = dialogData.data.tva20ConsoFinale;
         this.formData.chargesTva20ContribServPub = dialogData.data.tva20ContribAchem;
+      }
+    },
+    formatFormData: function() {
+      return {
+        dateFacture: this.formData.dateFacture,
+        consoKwHp: parseInt(this.formData.consoKwHp),
+        consoKwHc: parseInt(this.formData.consoKwHc),
+        consoKwPantaRei: parseInt(this.formData.consoKwPantaRei),
+        consoKwPiscine: parseInt(this.formData.consoKwPiscine),
+        chargesTva5EurosAboHp: parseFloat(this.formData.chargesTva5EurosAboHp.replace(',', '.')),
+        chargesTva5EurosContribAchemElec: parseFloat(this.formData.chargesTva5EurosContribAchemElec.replace(',', '.')),
+        chargesTva20TaxeConsoFinale: parseFloat(this.formData.chargesTva20TaxeConsoFinale.replace(',', '.')),
+        chargesTva20ContribServPub: parseFloat(this.formData.chargesTva20ContribServPub.replace(',', '.')),
+        prixKwHp: parseFloat(this.formData.prixKwHp.replace(',', '.')),
+        prixKwHc: parseFloat(this.formData.prixKwHc.replace(',', '.')),
+        total: this.formData.total
       }
     },
     calculer: function()

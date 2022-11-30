@@ -2,11 +2,15 @@
 
 namespace App\Entite;
 
+use App\Config\ValidationMessage;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\PositiveOrZero;
+use Symfony\Component\Validator\Constraints\Type;
 
 #[Entity]
 class ConsommationPersonne
@@ -35,6 +39,9 @@ class ConsommationPersonne
      * @var float
      */
     #[Column(type: 'float')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[Type(type: 'float', message: ValidationMessage::PRIX_NOMBRE)]
+    #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     private $total;
 
     /**
@@ -80,16 +87,26 @@ class ConsommationPersonne
     /**
      * @return float
      */
-    public function getMontant(): float
+    public function getTotal(): float
     {
-        return $this->montant;
+        return $this->total;
     }
 
     /**
-     * @param float $montant
+     * @param float $total
      */
-    public function setMontant(float $montant): void
+    public function setTotal($total): void
     {
-        $this->montant = $montant;
+        $this->total = $total;
+    }
+
+    public static function init($consoJson, Personne $personneRef)
+    {
+        $conso = new self();
+
+        $conso->setPersonne($personneRef);
+        $conso->setTotal($consoJson->total);
+
+        return $conso;
     }
 }

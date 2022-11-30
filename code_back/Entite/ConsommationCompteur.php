@@ -2,6 +2,7 @@
 
 namespace App\Entite;
 
+use App\Config\ValidationMessage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -10,6 +11,9 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\PositiveOrZero;
+use Symfony\Component\Validator\Constraints\Type;
 
 #[Entity]
 class ConsommationCompteur
@@ -38,42 +42,58 @@ class ConsommationCompteur
      * @var integer
      */
     #[Column(type: 'integer')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[Type(type: 'integer', message: ValidationMessage::KW_NOMBRE)]
+    #[PositiveOrZero(message: ValidationMessage::KW_NOMBRE)]
     private $consoKwHp;
 
     /**
      * @var integer
      */
     #[Column(type: 'integer')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[Type(type: 'integer', message: ValidationMessage::KW_NOMBRE)]
+    #[PositiveOrZero(message: ValidationMessage::KW_NOMBRE)]
     private $consoKwHc;
 
     /**
      * @var float
      */
     #[Column(type: 'float')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     private $consoEuroHp;
 
     /**
      * @var float
      */
     #[Column(type: 'float')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     private $consoEuroHc;
 
     /**
      * @var float
      */
     #[Column(type: 'float')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     private $consoEuroTotal;
 
     /**
      * @var float
      */
     #[Column(type: 'float')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     private $total;
 
     /**
      * @var float
      */
     #[Column(type: 'float')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     private $valeurPart;
 
     /**
@@ -138,7 +158,7 @@ class ConsommationCompteur
     /**
      * @param int $consoKwHp
      */
-    public function setConsoKwHp(int $consoKwHp): void
+    public function setConsoKwHp($consoKwHp): void
     {
         $this->consoKwHp = $consoKwHp;
     }
@@ -154,7 +174,7 @@ class ConsommationCompteur
     /**
      * @param int $consoKwHc
      */
-    public function setConsoKwHc(int $consoKwHc): void
+    public function setConsoKwHc($consoKwHc): void
     {
         $this->consoKwHc = $consoKwHc;
     }
@@ -170,7 +190,7 @@ class ConsommationCompteur
     /**
      * @param float $consoEuroHp
      */
-    public function setConsoEuroHp(float $consoEuroHp): void
+    public function setConsoEuroHp($consoEuroHp): void
     {
         $this->consoEuroHp = $consoEuroHp;
     }
@@ -186,7 +206,7 @@ class ConsommationCompteur
     /**
      * @param float $consoEuroHc
      */
-    public function setConsoEuroHc(float $consoEuroHc): void
+    public function setConsoEuroHc($consoEuroHc): void
     {
         $this->consoEuroHc = $consoEuroHc;
     }
@@ -202,7 +222,7 @@ class ConsommationCompteur
     /**
      * @param float $consoEuroTotal
      */
-    public function setConsoEuroTotal(float $consoEuroTotal): void
+    public function setConsoEuroTotal($consoEuroTotal): void
     {
         $this->consoEuroTotal = $consoEuroTotal;
     }
@@ -218,7 +238,7 @@ class ConsommationCompteur
     /**
      * @param float $total
      */
-    public function setTotal(float $total): void
+    public function setTotal($total): void
     {
         $this->total = $total;
     }
@@ -234,7 +254,7 @@ class ConsommationCompteur
     /**
      * @param float $valeurPart
      */
-    public function setValeurPart(float $valeurPart): void
+    public function setValeurPart($valeurPart): void
     {
         $this->valeurPart = $valeurPart;
     }

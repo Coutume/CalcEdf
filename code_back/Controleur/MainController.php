@@ -9,12 +9,13 @@ use Psr\Log\LoggerInterface;
 use Slim\App;
 use Throwable;
 
-class MainController
+class MainController extends CommonController
 {
     private $connHelper;
 
     public function __construct(Connexion $connexion)
     {
+        parent::__construct();
         $this->connHelper = $connexion;
     }
 
@@ -51,16 +52,10 @@ class MainController
             bool $logErrors,
             bool $logErrorDetails,
             ?LoggerInterface $logger = null
-        ) use ($app) {
-
-            $payload = ['error' => true, 'message' => $exception->getMessage()];
-
+        ) use ($app)
+        {
             $response = $app->getResponseFactory()->createResponse();
-            $response->getBody()->write(
-                json_encode($payload, JSON_UNESCAPED_UNICODE)
-            );
-
-            return $response->withStatus(500);
+            return $this->erreurReponse($exception->getMessage(), $response);
         };
 
         $errorMiddleware = $app->addErrorMiddleware(true, true, true);

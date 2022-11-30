@@ -14,10 +14,12 @@ export default defineStore('main', {
                     rattacheA: null, // Identifiant du compteur auquel le sous-compteur est rattaché. Si null = compteur principal
                     personnes: [
                         {
-                            'nom' : 'Marco'
+                            'nom' : 'Marco',
+                            id: 3
                         },
                         {
-                            'nom' : 'Raphael'
+                            'nom' : 'Raphael',
+                            id: 2
                         }
                     ]
                 },
@@ -28,10 +30,12 @@ export default defineStore('main', {
                     rattacheA: 1,
                     personnes: [
                         {
-                            'nom' : 'Florian'
+                            'nom' : 'Florian',
+                            id: 4
                         },
                         {
-                            'nom' : 'Christophe'
+                            'nom' : 'Christophe',
+                            id: 1
                         }
                     ]
                 },
@@ -42,16 +46,20 @@ export default defineStore('main', {
                     partageTaxes: false,
                     personnes: [
                         {
-                            'nom' : 'Florian'
+                            'nom' : 'Florian',
+                            id: 4
                         },
                         {
-                            'nom' : 'Christophe'
+                            'nom' : 'Christophe',
+                            id: 1
                         },
                         {
-                            'nom' : 'Marco'
+                            'nom' : 'Marco',
+                            id: 3
                         },
                         {
-                            'nom' : 'Raphael'
+                            'nom' : 'Raphael',
+                            id: 2
                         }
                     ]
                 }

@@ -12,7 +12,9 @@ export function registerAxiosInterceptor() {
         return response;
     }, function (error)
     {
-        messageStore.addMessage("Une erreur est survenue. Veuillez réessayer.", true, false);
+        let msg = error != null && error.response && error.response.data.message ? error.response.data.message : "Une erreur est survenue. Veuillez réessayer.";
+
+        messageStore.addMessage(msg, true, false);
         console.log('requête terminée avec erreur.', error);
         return Promise.reject(error);
     });

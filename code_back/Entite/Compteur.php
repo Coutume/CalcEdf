@@ -64,7 +64,7 @@ class Compteur
     /**
      * @param string $nom
      */
-    public function setNom(string $nom): void
+    public function setNom($nom): void
     {
         $this->nom = $nom;
     }
@@ -96,7 +96,7 @@ class Compteur
     /**
      * @param bool|null $partageTaxes
      */
-    public function setPartageTaxes(bool $partageTaxes): void
+    public function setPartageTaxes($partageTaxes): void
     {
         $this->partageTaxes = $partageTaxes;
     }
@@ -112,7 +112,7 @@ class Compteur
     /**
      * @param Personne[] $personnes
      */
-    public function setPersonnes(array $personnes): void
+    public function setPersonnes($personnes): void
     {
         $this->personnes = $personnes;
     }
