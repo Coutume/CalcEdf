@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import PageAccueil from '../components/pages/accueil.vue'
 import PageSaisie from '../components/pages/saisie.vue'
+import PageHistorique from '../components/pages/historique.vue'
 
 Vue.use(VueRouter)
 
@@ -20,6 +21,12 @@ const router = new VueRouter({
       name: 'saisie',
       component: PageSaisie,
       meta: {nom: "Saisie de la consommation"}
+    },
+    {
+      path: '/historique',
+      name: 'historique',
+      component: PageHistorique,
+      meta: {nom: "Historique des factures"}
     }
   ]
 })

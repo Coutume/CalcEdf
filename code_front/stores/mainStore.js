@@ -85,5 +85,20 @@ export default defineStore('main', {
                 loadingStore.finishLoading('Ajout de la facture...');
             }
         },
+        async getHistoFacture()
+        {
+            const loadingStore = useLoadingStore();
+            try
+            {
+                loadingStore.beginLoading('Récupération des factures...');
+                let data = await axios.get(import.meta.env.VITE_URL_API + 'facture/lister');
+
+                return data.data;
+            }
+            finally
+            {
+                loadingStore.finishLoading('Récupération des factures...');
+            }
+        }
     },
 })

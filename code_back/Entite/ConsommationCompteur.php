@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\PositiveOrZero;
 use Symfony\Component\Validator\Constraints\Type;
@@ -24,12 +25,14 @@ class ConsommationCompteur
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
+    #[Groups(['facture'])]
     private $id;
 
     /**
      * @var Compteur
      */
     #[ManyToOne(targetEntity: 'App\Entite\Compteur')]
+    #[Groups(['facture'])]
     private $compteur;
 
     /**
@@ -45,6 +48,7 @@ class ConsommationCompteur
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[Type(type: 'integer', message: ValidationMessage::KW_NOMBRE)]
     #[PositiveOrZero(message: ValidationMessage::KW_NOMBRE)]
+    #[Groups(['facture'])]
     private $consoKwHp;
 
     /**
@@ -54,6 +58,7 @@ class ConsommationCompteur
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[Type(type: 'integer', message: ValidationMessage::KW_NOMBRE)]
     #[PositiveOrZero(message: ValidationMessage::KW_NOMBRE)]
+    #[Groups(['facture'])]
     private $consoKwHc;
 
     /**
@@ -62,6 +67,7 @@ class ConsommationCompteur
     #[Column(type: 'float')]
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
+    #[Groups(['facture'])]
     private $consoEuroHp;
 
     /**
@@ -70,6 +76,7 @@ class ConsommationCompteur
     #[Column(type: 'float')]
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
+    #[Groups(['facture'])]
     private $consoEuroHc;
 
     /**
@@ -78,6 +85,7 @@ class ConsommationCompteur
     #[Column(type: 'float')]
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
+    #[Groups(['facture'])]
     private $consoEuroTotal;
 
     /**
@@ -86,6 +94,7 @@ class ConsommationCompteur
     #[Column(type: 'float')]
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
+    #[Groups(['facture'])]
     private $total;
 
     /**
@@ -94,6 +103,7 @@ class ConsommationCompteur
     #[Column(type: 'float')]
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
+    #[Groups(['facture'])]
     private $valeurPart;
 
     /**

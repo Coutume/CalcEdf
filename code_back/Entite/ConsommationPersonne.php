@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\PositiveOrZero;
 use Symfony\Component\Validator\Constraints\Type;
@@ -21,12 +22,14 @@ class ConsommationPersonne
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
+    #[Groups(['facture'])]
     private $id;
 
     /**
      * @var Personne
      */
     #[ManyToOne(targetEntity: 'App\Entite\Personne')]
+    #[Groups(['facture'])]
     private $personne;
 
     /**
@@ -42,6 +45,7 @@ class ConsommationPersonne
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[Type(type: 'float', message: ValidationMessage::PRIX_NOMBRE)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
+    #[Groups(['facture'])]
     private $total;
 
     /**

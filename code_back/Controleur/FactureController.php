@@ -9,19 +9,17 @@ use DI\Annotation\Inject;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class FactureController extends CommonController
 {
-    /**
-     * @Inject(name="entityManager")
-     * @var EntityManager
-     */
-    private $entityManager;
-
     public function lister(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
-        $response->getBody()->write("API de gestion des factures : lister. Non implémenté.");
-        return $response;
+        $factureRepository = $this->entityManager->getRepository('App\Entite\Facture');
+        $factures = $factureRepository->findAll();
+
+        $response->getBody()->write($this->serializer->serialize($factures, 'json', ['groups' => 'facture']));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 
     public function ajouter(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
@@ -30,7 +28,7 @@ class FactureController extends CommonController
 
         if(empty($donneesFacture))
         {
-            throw new \Exception("Les données sur la facture sont manquants.");
+            throw new \Exception("Les données sur la facture sont manquantes.");
         }
 
         $facture = $this->initFacture($donneesFacture);

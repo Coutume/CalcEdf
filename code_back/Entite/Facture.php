@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
+use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Validator\Constraints\PositiveOrZero;
@@ -21,11 +23,14 @@ class Facture
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
+    #[Groups(['facture'])]
     private $id;
 
     #[Column(type: 'datetime')]
     #[NotNull(message: ValidationMessage::DATE_RENSEIGNEE)]
     #[Type(type: '\DateTime', message: ValidationMessage::DATE_RENSEIGNEE)]
+    #[Groups(['facture'])]
+    #[Context(context: ['datetime_format' => 'Y-m-d'])]
     private $date;
 
     /**
@@ -35,6 +40,7 @@ class Facture
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[Type(type: 'integer', message: ValidationMessage::KW_NOMBRE)]
     #[Positive(message: ValidationMessage::KW_NOMBRE)]
+    #[Groups(['facture'])]
     private $consoKwHp;
 
     /**
@@ -44,6 +50,7 @@ class Facture
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[Type(type: 'integer', message: ValidationMessage::KW_NOMBRE)]
     #[PositiveOrZero(message: ValidationMessage::KW_NOMBRE)]
+    #[Groups(['facture'])]
     private $consoKwHc;
 
     /**
@@ -52,6 +59,7 @@ class Facture
     #[Column(type: 'float')]
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
+    #[Groups(['facture'])]
     private $prixKwHp;
 
     /**
@@ -60,6 +68,7 @@ class Facture
     #[Column(type: 'float')]
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
+    #[Groups(['facture'])]
     private $prixKwHc;
 
     /**
@@ -68,6 +77,7 @@ class Facture
     #[Column(type: 'float')]
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
+    #[Groups(['facture'])]
     private $chargesTva5EurosAboHp;
 
     /**
@@ -76,6 +86,7 @@ class Facture
     #[Column(type: 'float')]
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
+    #[Groups(['facture'])]
     private $chargesTva5EurosContribAchemElec;
 
     /**
@@ -84,6 +95,7 @@ class Facture
     #[Column(type: 'float')]
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
+    #[Groups(['facture'])]
     private $chargesTva20TaxeConsoFinale;
 
     /**
@@ -92,6 +104,7 @@ class Facture
     #[Column(type: 'float')]
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
+    #[Groups(['facture'])]
     private $total;
 
     /**
@@ -100,6 +113,7 @@ class Facture
     #[Column(type: 'float')]
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
+    #[Groups(['facture'])]
     private $chargesTva20ContribServPub;
 
     /**
@@ -107,6 +121,7 @@ class Facture
      */
     #[OneToMany(mappedBy: 'facture', targetEntity: 'App\Entite\ConsommationCompteur', cascade: ['persist'])]
     #[NotNull(message: ValidationMessage::VALEUR_TECH)]
+    #[Groups(['facture'])]
     private $consommationsCompteur;
 
     /**
@@ -114,6 +129,7 @@ class Facture
      */
     #[OneToMany(mappedBy: 'facture', targetEntity: '\App\Entite\ConsommationPersonne', cascade: ['persist'])]
     #[NotNull(message: ValidationMessage::VALEUR_TECH)]
+    #[Groups(['facture'])]
     private $consommationsPersonne;
 
     public function __construct()

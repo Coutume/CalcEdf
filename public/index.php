@@ -31,4 +31,7 @@ $app->get('/test', ['\App\Controleur\MainController', 'test']);
 $app->post('/facture/ajouter', ['\App\Controleur\FactureController', 'ajouter']);
 $app->options('/facture/ajouter', ['\App\Controleur\MainController', 'listerEnTetes']);
 
+$app->get('/facture/lister', ['\App\Controleur\FactureController', 'lister']);
+$app->options('/facture/lister', ['\App\Controleur\MainController', 'listerEnTetes']);
+
 $app->run();

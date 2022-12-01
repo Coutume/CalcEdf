@@ -2,12 +2,14 @@
 
 namespace App\Entite;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[Entity]
 class Compteur
@@ -19,30 +21,35 @@ class Compteur
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
+    #[Groups(['facture'])]
     private $id;
 
     /**
      * @var ?string
      */
     #[Column(type: 'string', length: 100)]
+    #[Groups(['facture'])]
     private $nom;
 
     /**
      * @var ?Compteur
      */
     #[ManyToOne(targetEntity: 'App\Entite\Compteur')]
+    #[Groups(['facture'])]
     private $compteurParent;
 
     /**
      * @var ?boolean
      */
     #[Column(type: 'boolean')]
+    #[Groups(['facture'])]
     private $partageTaxes;
 
     /**
-     * @var ?Personne[]
+     * @var ?Personne[]|Collection
      */
     #[ManyToMany(targetEntity: 'App\Entite\Personne', mappedBy: 'compteurs')]
+    #[Groups(['facture'])]
     private $personnes;
 
     /**
@@ -104,7 +111,7 @@ class Compteur
     /**
      * @return ?Personne[]
      */
-    public function getPersonnes(): ?array
+    public function getPersonnes(): ?Collection
     {
         return $this->personnes;
     }

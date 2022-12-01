@@ -55,7 +55,7 @@ class MainController extends CommonController
         ) use ($app)
         {
             $response = $app->getResponseFactory()->createResponse();
-            return $this->erreurReponse($exception->getMessage(), $response);
+            return MainController::erreurReponse($exception->getMessage(), $response);
         };
 
         $errorMiddleware = $app->addErrorMiddleware(true, true, true);
