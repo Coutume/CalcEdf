@@ -20,7 +20,7 @@ const router = new VueRouter({
       path: '/saisie',
       name: 'saisie',
       component: PageSaisie,
-      meta: {nom: "Saisie de la consommation"}
+      meta: {nom: "Saisie d'une facture"}
     },
     {
       path: '/historique',

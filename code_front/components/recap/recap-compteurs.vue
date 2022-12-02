@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import RecapCompteur from "@/components/recap-compteur.vue";
+import RecapCompteur from "@/components/recap/recap-compteur.vue";
 export default {
   name: "recap-compteurs",
   components: {RecapCompteur},
