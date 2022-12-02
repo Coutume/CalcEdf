@@ -46,6 +46,13 @@ class Compteur
     private $partageTaxes;
 
     /**
+     * @var string
+     */
+    #[Column(type: 'string', length: 50, nullable: true)]
+    #[Groups(['facture'])]
+    private $couleurGraphique;
+
+    /**
      * @var ?Personne[]|Collection
      */
     #[ManyToMany(targetEntity: 'App\Entite\Personne', mappedBy: 'compteurs')]
@@ -124,5 +131,19 @@ class Compteur
         $this->personnes = $personnes;
     }
 
+    /**
+     * @return string
+     */
+    public function getCouleurGraphique(): string
+    {
+        return $this->couleurGraphique;
+    }
 
+    /**
+     * @param string $couleurGraphique
+     */
+    public function setCouleurGraphique(string $couleurGraphique): void
+    {
+        $this->couleurGraphique = $couleurGraphique;
+    }
 }

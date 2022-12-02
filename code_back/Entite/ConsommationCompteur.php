@@ -44,9 +44,8 @@ class ConsommationCompteur
     /**
      * @var integer
      */
-    #[Column(type: 'integer')]
+    #[Column(type: 'float')]
     #[NotNull(message: ValidationMessage::VALEUR)]
-    #[Type(type: 'integer', message: ValidationMessage::KW_NOMBRE)]
     #[PositiveOrZero(message: ValidationMessage::KW_NOMBRE)]
     #[Groups(['facture'])]
     private $consoKwHp;
@@ -54,9 +53,8 @@ class ConsommationCompteur
     /**
      * @var integer
      */
-    #[Column(type: 'integer')]
+    #[Column(type: 'float')]
     #[NotNull(message: ValidationMessage::VALEUR)]
-    #[Type(type: 'integer', message: ValidationMessage::KW_NOMBRE)]
     #[PositiveOrZero(message: ValidationMessage::KW_NOMBRE)]
     #[Groups(['facture'])]
     private $consoKwHc;

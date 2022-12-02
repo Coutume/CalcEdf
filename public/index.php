@@ -34,4 +34,7 @@ $app->options('/facture/ajouter', ['\App\Controleur\MainController', 'listerEnTe
 $app->get('/facture/lister', ['\App\Controleur\FactureController', 'lister']);
 $app->options('/facture/lister', ['\App\Controleur\MainController', 'listerEnTetes']);
 
+$app->get('/compteur/lister', ['\App\Controleur\CompteurController', 'lister']);
+$app->options('/compteur/lister', ['\App\Controleur\MainController', 'listerEnTetes']);
+
 $app->run();

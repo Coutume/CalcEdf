@@ -30,7 +30,7 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-    <v-main>
+    <v-main v-if="ready">
       <router-view></router-view>
     </v-main>
     <v-dialog
@@ -78,6 +78,7 @@
 import {mapStores} from "pinia";
 import useLoadingStore from "@/stores/loadingStore.js";
 import useMessageStore from "@/stores/messageStore.js";
+import useMainStore from "@/stores/mainStore.js";
 
 export default {
   name: "principale",
@@ -88,8 +89,15 @@ export default {
     }
   },
   computed: {
-    ...mapStores(useLoadingStore),
-    ...mapStores(useMessageStore)
+    ...mapStores(useLoadingStore, useMessageStore, useMainStore),
+    ready: function()
+    {
+      return this.mainStore.compteurs.length > 0;
+    }
+  },
+  mounted()
+  {
+    this.mainStore.getCompteurs();
   }
 }
 </script>
