@@ -107,7 +107,7 @@ class ConsommationCompteur
     /**
      * @var DetailConsommationCompteur[]|Collection
      */
-    #[OneToMany(mappedBy: 'consommationCompteur', targetEntity: 'App\Entite\DetailConsommationCompteur', cascade: ['persist'])]
+    #[OneToMany(mappedBy: 'consommationCompteur', targetEntity: 'App\Entite\DetailConsommationCompteur', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private $detailsConsommationCompteur;
 
     public function __construct()

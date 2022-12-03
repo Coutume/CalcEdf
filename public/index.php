@@ -37,4 +37,7 @@ $app->options('/facture/lister', ['\App\Controleur\MainController', 'listerEnTet
 $app->get('/compteur/lister', ['\App\Controleur\CompteurController', 'lister']);
 $app->options('/compteur/lister', ['\App\Controleur\MainController', 'listerEnTetes']);
 
+$app->post('/facture/modifier/{id}', ['\App\Controleur\FactureController', 'modifier']);
+$app->options('/facture/modifier/{id}', ['\App\Controleur\MainController', 'listerEnTetes']);
+
 $app->run();

@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Validator\Constraints\PositiveOrZero;
 use Symfony\Component\Validator\Constraints\Type;
 
-#[Entity]
+#[Entity(repositoryClass: '\App\Repository\FactureRepository')]
 class Facture
 {
     #[Id]
@@ -105,7 +105,7 @@ class Facture
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     #[Groups(['facture'])]
-    private $total;
+    private $chargesTva20ContribServPub;
 
     /**
      * @var float
@@ -114,12 +114,12 @@ class Facture
     #[NotNull(message: ValidationMessage::VALEUR)]
     #[PositiveOrZero(message: ValidationMessage::PRIX_NOMBRE)]
     #[Groups(['facture'])]
-    private $chargesTva20ContribServPub;
+    private $total;
 
     /**
      * @var Collection
      */
-    #[OneToMany(mappedBy: 'facture', targetEntity: 'App\Entite\ConsommationCompteur', cascade: ['persist'])]
+    #[OneToMany(mappedBy: 'facture', targetEntity: 'App\Entite\ConsommationCompteur', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[NotNull(message: ValidationMessage::VALEUR_TECH)]
     #[Groups(['facture'])]
     private $consommationsCompteur;
@@ -127,7 +127,7 @@ class Facture
     /**
      * @var Collection
      */
-    #[OneToMany(mappedBy: 'facture', targetEntity: '\App\Entite\ConsommationPersonne', cascade: ['persist'])]
+    #[OneToMany(mappedBy: 'facture', targetEntity: '\App\Entite\ConsommationPersonne', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[NotNull(message: ValidationMessage::VALEUR_TECH)]
     #[Groups(['facture'])]
     private $consommationsPersonne;
@@ -338,5 +338,21 @@ class Facture
     {
         $consommationsPersonne->setFacture($this);
         $this->consommationsPersonne->add($consommationsPersonne);
+    }
+
+    /**
+     * @param ArrayCollection|Collection $consommationsCompteur
+     */
+    public function setConsommationsCompteur(ArrayCollection|Collection $consommationsCompteur): void
+    {
+        $this->consommationsCompteur = $consommationsCompteur;
+    }
+
+    /**
+     * @param ArrayCollection|Collection $consommationsPersonne
+     */
+    public function setConsommationsPersonne(ArrayCollection|Collection $consommationsPersonne): void
+    {
+        $this->consommationsPersonne = $consommationsPersonne;
     }
 }

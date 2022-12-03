@@ -5,6 +5,7 @@ namespace App\Controleur;
 use App\Entite\ConsommationCompteur;
 use App\Entite\ConsommationPersonne;
 use App\Entite\Facture;
+use App\Repository\FactureRepository;
 use DI\Annotation\Inject;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
@@ -41,12 +42,30 @@ class FactureController extends CommonController
 
         $this->entityManager->persist($facture);
         $this->entityManager->flush();
+
         return $response;
     }
 
-    public function modifier(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function modifier(ServerRequestInterface $request, ResponseInterface $response, $id): ResponseInterface
     {
-        $response->getBody()->write("API de gestion des factures : modifier. Non implémenté.");
+        /**
+         * @var $factureRepository FactureRepository
+         */
+        $factureRepository = $this->entityManager->getRepository('App\Entite\Facture');
+        $facture = $factureRepository->find($id);
+        $donneesFacture = json_decode($request->getBody()->getContents());
+
+        $factureJson = $this->initFacture($donneesFacture);
+        $erreurs = $this->validator->validate($factureJson);
+
+        if(count($erreurs) > 0)
+        {
+            return $this->erreurValidationReponse($erreurs, $response);
+        }
+
+        $factureRepository->fusionner($facture, $factureJson);
+        $this->entityManager->flush();
+
         return $response;
     }
 
