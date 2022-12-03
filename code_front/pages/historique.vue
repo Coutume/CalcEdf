@@ -39,6 +39,9 @@
                   </v-chip>
                 </div>
               </template>
+              <template v-slot:item.actions="{ item }">
+                <v-btn text :to="'/edition/' + item.id">Modifier</v-btn>
+              </template>
             </v-data-table>
           </v-card-text>
         </v-card>
@@ -87,6 +90,12 @@ export default {
         {
           text: 'Compteurs',
           value: 'consommationsCompteur',
+          sortable: false
+        },
+        {
+          text: 'Actions',
+          value: 'actions',
+          align: 'center',
           sortable: false
         }
       ],
