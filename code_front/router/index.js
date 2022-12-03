@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import PageAccueil from '../components/pages/accueil.vue'
-import PageSaisie from '../components/pages/saisie.vue'
-import PageHistorique from '../components/pages/historique.vue'
+import PageAccueil from '../pages/accueil.vue'
+import PageSaisie from '../pages/saisie.vue'
+import PageHistorique from '../pages/historique.vue'
 
 Vue.use(VueRouter)
 
