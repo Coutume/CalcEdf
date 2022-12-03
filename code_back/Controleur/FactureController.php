@@ -14,16 +14,30 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class FactureController extends CommonController
 {
-    public function lister(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function lister(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $factureRepository = $this->entityManager->getRepository('App\Entite\Facture');
-        $factures = $factureRepository->findBy([], ['date' => 'asc']);
+        $factures = $factureRepository->findBy([], ['dateFacture' => 'asc']);
 
         $response->getBody()->write($this->serializer->serialize($factures, 'json', ['groups' => 'facture']));
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function ajouter(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function recuperer(ServerRequestInterface $request, ResponseInterface $response, $id): ResponseInterface
+    {
+        $factureRepository = $this->entityManager->getRepository('App\Entite\Facture');
+        $facture = $factureRepository->find($id);
+
+        if(empty($facture))
+        {
+            return self::erreurReponse("la facture $id est introuvable.", $response);
+        }
+
+        $response->getBody()->write($this->serializer->serialize($facture, 'json', ['groups' => 'facture']));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function ajouter(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $donneesFacture = json_decode($request->getBody()->getContents());
 
@@ -69,7 +83,7 @@ class FactureController extends CommonController
         return $response;
     }
 
-    public function supprimer(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function supprimer(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $response->getBody()->write("API de gestion des factures : supprimer. Non implémenté.");
         return $response;
@@ -81,7 +95,7 @@ class FactureController extends CommonController
 
         $date = \DateTime::createFromFormat('Y-m-d', $factureJson->saisies->dateFacture);
 
-        $facture->setDate(($date !== false ? $date->setTime(0, 0) : null));
+        $facture->setDateFacture(($date !== false ? $date->setTime(0, 0) : null));
         $facture->setConsoKwHp($factureJson->saisies->consoKwHp);
         $facture->setConsoKwHc($factureJson->saisies->consoKwHc);
         $facture->setPrixKwHp($factureJson->saisies->prixKwHp);

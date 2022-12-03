@@ -24,7 +24,7 @@
             v-model="listeMenuLien"
             active-class="green--text text--accent-4"
         >
-          <v-list-item :to="route.path" v-for="route in $router.options.routes">
+          <v-list-item :to="route.path" v-for="route in routes">
             <v-list-item-title>{{ route.meta.nom }}</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
@@ -93,6 +93,10 @@ export default {
     ready: function()
     {
       return this.mainStore.compteurs.length > 0;
+    },
+    routes: function()
+    {
+      return this.$router.options.routes.filter(r => !r.meta.hidden);
     }
   },
   mounted()

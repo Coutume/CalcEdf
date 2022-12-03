@@ -59,6 +59,12 @@ class ConsommationCompteur
     #[Groups(['facture'])]
     private $consoKwHc;
 
+    #[Column(type: 'float')]
+    #[NotNull(message: ValidationMessage::VALEUR)]
+    #[PositiveOrZero(message: ValidationMessage::KW_NOMBRE)]
+    #[Groups(['facture'])]
+    private $consoKwTotal;
+
     /**
      * @var float
      */
@@ -273,6 +279,22 @@ class ConsommationCompteur
         $this->detailsConsommationCompteur->add($detailConsommationCompteur);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getConsoKwTotal()
+    {
+        return $this->consoKwTotal;
+    }
+
+    /**
+     * @param mixed $consoKwTotal
+     */
+    public function setConsoKwTotal($consoKwTotal): void
+    {
+        $this->consoKwTotal = $consoKwTotal;
+    }
+
     public static function init($consommation, Compteur $compteur)
     {
         $conso = new self();
@@ -280,6 +302,7 @@ class ConsommationCompteur
         $conso->setCompteur($compteur);
         $conso->setConsoKwHp($consommation->consoKwHp);
         $conso->setConsoKwHc($consommation->consoKwHc);
+        $conso->setConsoKwTotal($consommation->consoKwTotal);
         $conso->setConsoEuroHp($consommation->consoEurosHp);
         $conso->setConsoEuroHc($consommation->consoEurosHc);
         $conso->setConsoEuroTotal($consommation->consoEurosTotal);

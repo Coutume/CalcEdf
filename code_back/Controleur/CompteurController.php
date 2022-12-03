@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class CompteurController extends CommonController
 {
-    public function lister(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function lister(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $factureRepository = $this->entityManager->getRepository('App\Entite\Compteur');
         $factures = $factureRepository->findAll();

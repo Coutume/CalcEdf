@@ -70,7 +70,7 @@ export default {
         },
         {
           text: 'Date facture',
-          value: 'date'
+          value: 'dateFacture'
         },
         {
           text: 'Conso kw heure pleine',
@@ -114,7 +114,7 @@ export default {
     ...mapStores(useMainStore),
     labelsDate: function()
     {
-      return this.factures.map(f => f.date);
+      return this.factures.map(f => f.dateFacture);
     },
     datasetsConsoKw: function() {
       return this.mainStore.compteurs.map(function(compteur) {

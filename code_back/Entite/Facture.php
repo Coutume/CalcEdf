@@ -31,7 +31,7 @@ class Facture
     #[Type(type: '\DateTime', message: ValidationMessage::DATE_RENSEIGNEE)]
     #[Groups(['facture'])]
     #[Context(context: ['datetime_format' => 'Y-m-d'])]
-    private $date;
+    private $dateFacture;
 
     /**
      * @var integer
@@ -149,17 +149,17 @@ class Facture
     /**
      * @return mixed
      */
-    public function getDate()
+    public function getDateFacture()
     {
-        return $this->date;
+        return $this->dateFacture;
     }
 
     /**
-     * @param mixed $date
+     * @param mixed $dateFacture
      */
-    public function setDate($date): void
+    public function setDateFacture($dateFacture): void
     {
-        $this->date = $date;
+        $this->dateFacture = $dateFacture;
     }
 
     /**
@@ -345,7 +345,10 @@ class Facture
      */
     public function setConsommationsCompteur(ArrayCollection|Collection $consommationsCompteur): void
     {
-        $this->consommationsCompteur = $consommationsCompteur;
+        foreach($consommationsCompteur as $cc)
+        {
+            $this->addConsommationsCompteur($cc);
+        }
     }
 
     /**
@@ -353,6 +356,9 @@ class Facture
      */
     public function setConsommationsPersonne(ArrayCollection|Collection $consommationsPersonne): void
     {
-        $this->consommationsPersonne = $consommationsPersonne;
+        foreach($consommationsPersonne as $cp)
+        {
+            $this->addConsommationsPersonne($cp);
+        }
     }
 }

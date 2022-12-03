@@ -19,19 +19,19 @@ class MainController extends CommonController
         $this->connHelper = $connexion;
     }
 
-    public function home(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function home(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $response->getBody()->write("API de gestion des factures.");
         return $response;
     }
 
-    public function test(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function test(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $this->connHelper->getConnexion();
         return $response;
     }
 
-    public function listerEnTetes(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function listerEnTetes(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         return $response;
     }

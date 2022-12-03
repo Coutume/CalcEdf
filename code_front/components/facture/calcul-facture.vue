@@ -4,7 +4,7 @@
       <v-col
           cols="12"
       >
-        <saisie-facture v-model="formData" @valide="onFormValide($event)"></saisie-facture>
+        <saisie-facture v-model="formData" :edit-mode="editMode" @valide="onFormValide($event)"></saisie-facture>
       </v-col>
     </v-row>
     <v-row>
@@ -131,6 +131,10 @@ export default {
   computed: {
     ...mapStores(useMainStore),
     ...mapStores(useMessageStore),
+    editMode: function()
+    {
+      return this.factureData.id !== undefined;
+    },
     nbPartTaxes: function() {
       return this.mainStore.compteurs.filter(c => c.partageTaxes === true).length;
     },
@@ -172,7 +176,14 @@ export default {
     validerFacture: function()
     {
       this.dialogResultat = false;
-      this.mainStore.ajouterFacture(this.facture);
+      if(this.editMode)
+      {
+        this.mainStore.modifierFacture(this.facture, this.factureData.id);
+      }
+      else
+      {
+        this.mainStore.ajouterFacture(this.facture);
+      }
       console.log(import.meta.env);
     },
     onFormValide: function(isValid)
@@ -226,7 +237,8 @@ export default {
       let consoKwHp = parseInt(this.formData.consoKwHp);
       let consoKwHc = parseInt(this.formData.consoKwHc);
       let totalKwPiscine = parseInt(this.formData.consoKwPiscine);
-      let totalKwPantaRei = parseInt(this.formData.consoKwPantaRei) - totalKwPiscine;
+      let consoKwPantaRei = parseInt(this.formData.consoKwPantaRei);
+      let totalKwPantaRei = consoKwPantaRei - totalKwPiscine;
       let prixKwHp = parseFloat(this.formData.prixKwHp.replace(',', '.'));
       let prixKwHc = parseFloat(this.formData.prixKwHc.replace(',', '.'));
       let totalKw = consoKwHc + consoKwHp;
@@ -241,21 +253,21 @@ export default {
       // Calcul de la conso hp / hc compteur principal
       let compteurPrincipal = compteurs.find(c => c.id === 1);
       let recapCompteurPrincipal = this.creerRecapCompteur(compteurPrincipal, totalKwPrincipal
-          , pourcentHp, pourcentHc, prixKwHp, prixKwHc);
+          , pourcentHp, pourcentHc, prixKwHp, prixKwHc, totalKw);
       this.ajouterLigneBudgetaire(recapCompteurPrincipal, 'Taxes TVA 5,5%', chargesTva5Part);
       this.ajouterLigneBudgetaire(recapCompteurPrincipal, 'Taxes TVA 20%', chargesTva20Part);
 
       // Calcul de la conso hp / hc compteur Panta Rei
       let compteurPantaRei = compteurs.find(c => c.id === 2);
       let recapCompteurPantaRei = this.creerRecapCompteur(compteurPantaRei, totalKwPantaRei
-          , pourcentHp, pourcentHc, prixKwHp, prixKwHc);
+          , pourcentHp, pourcentHc, prixKwHp, prixKwHc, consoKwPantaRei);
       this.ajouterLigneBudgetaire(recapCompteurPantaRei, 'Taxes TVA 5,5%', chargesTva5Part);
       this.ajouterLigneBudgetaire(recapCompteurPantaRei, 'Taxes TVA 20%', chargesTva20Part);
 
       // Calcul de la conso hp / hc compteur Piscine
       let compteurPiscine = compteurs.find(c => c.id === 3);
       let recapCompteurPiscine = this.creerRecapCompteur(compteurPiscine, totalKwPiscine
-          , pourcentHp, pourcentHc, prixKwHp, prixKwHc);
+          , pourcentHp, pourcentHc, prixKwHp, prixKwHc, totalKwPiscine);
 
       this.recapCompteurs.push(recapCompteurPrincipal, recapCompteurPantaRei, recapCompteurPiscine);
       this.creerRecapsPersonne();
@@ -263,7 +275,7 @@ export default {
 
       this.dialogResultat = true;
     },
-    creerRecapCompteur: function(compteur, consoKw, pourcentHp, pourcentHc, prixKwHp, prixKwHc)
+    creerRecapCompteur: function(compteur, consoKw, pourcentHp, pourcentHc, prixKwHp, prixKwHc, consoKwAvantDeduction)
     {
       let consoKwHp = consoKw * pourcentHp / 100;
       let consoKwHc = consoKw * pourcentHc / 100;
@@ -275,6 +287,7 @@ export default {
         compteur : compteur,
         consoKwHp: consoKwHp,
         consoKwHc: consoKwHc,
+        consoKwTotal: consoKwAvantDeduction,
         consoEurosHp: consoEurosHp > 0 ? consoEurosHp : 0,
         consoEurosHc: consoEurosHc > 0 ? consoEurosHc : 0,
         consoEurosTotal: consoEurosTotalTtc > 0 ? consoEurosTotalTtc : 0,

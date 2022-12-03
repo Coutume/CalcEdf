@@ -28,6 +28,21 @@ export default defineStore('main', {
                 loadingStore.finishLoading('Ajout de la facture...');
             }
         },
+        async modifierFacture(facture, id)
+        {
+            const loadingStore = useLoadingStore();
+            const messageStore = useMessageStore();
+            try
+            {
+                loadingStore.beginLoading('Modification de la facture ' + id + ' ...');
+                let data = await axios.post(import.meta.env.VITE_URL_API + 'facture/modifier/' + id, facture);
+                messageStore.addMessage("Facture ajoutée.", false, true);
+            }
+            finally
+            {
+                loadingStore.finishLoading('Modification de la facture ' + id + ' ...');
+            }
+        },
         async getHistoFacture()
         {
             const loadingStore = useLoadingStore();
@@ -56,6 +71,21 @@ export default defineStore('main', {
             finally
             {
                 loadingStore.finishLoading('Récupération des compteurs...');
+            }
+        },
+        async getFacture(id)
+        {
+            const loadingStore = useLoadingStore();
+            try
+            {
+                loadingStore.beginLoading('Récupération de la facture ' + id + ' ...');
+                let data = await axios.get(import.meta.env.VITE_URL_API + 'facture/recuperer/' + id);
+
+                return data.data;
+            }
+            finally
+            {
+                loadingStore.finishLoading('Récupération de la facture ' + id + ' ...');
             }
         }
     },

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import PageAccueil from '../pages/accueil.vue'
 import PageSaisie from '../pages/saisie.vue'
+import PageEdition from '../pages/edition.vue'
 import PageHistorique from '../pages/historique.vue'
 
 Vue.use(VueRouter)
@@ -21,6 +22,12 @@ const router = new VueRouter({
       name: 'saisie',
       component: PageSaisie,
       meta: {nom: "Saisie d'une facture"}
+    },
+    {
+      path: '/edition/:id',
+      name: 'edition',
+      component: PageEdition,
+      meta: {nom: "Édition d'une facture", hidden: true}
     },
     {
       path: '/historique',

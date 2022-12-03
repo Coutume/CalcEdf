@@ -2,9 +2,7 @@
 
 use App\Config\ContainerConfig;
 use App\Controleur\MainController;
-use DI\Container;
-use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface as Response;
+use DI\Bridge\Slim\Bridge;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Factory\AppFactory;
@@ -15,7 +13,7 @@ require __DIR__ . '/../vendor/autoload.php';
 $container = ContainerConfig::initContainer();
 
 // initialisation de l'application
-$app = AppFactory::createFromContainer($container);
+$app = Bridge::create($container);
 $app->setBasePath('/public');
 
 MainController::initErrorRoutingMiddleware($app);
@@ -28,16 +26,19 @@ $app->add(function (Request $request, RequestHandler $handler) {
 $app->get('/', ['\App\Controleur\MainController', 'home']);
 $app->get('/test', ['\App\Controleur\MainController', 'test']);
 
+$app->get('/facture/recuperer/{id}', ['\App\Controleur\FactureController', 'recuperer']);
+$app->options('/facture/recuperer/{id}', ['\App\Controleur\MainController', 'listerEnTetes']);
+
 $app->post('/facture/ajouter', ['\App\Controleur\FactureController', 'ajouter']);
 $app->options('/facture/ajouter', ['\App\Controleur\MainController', 'listerEnTetes']);
+
+$app->post('/facture/modifier/{id}', ['\App\Controleur\FactureController', 'modifier']);
+$app->options('/facture/modifier/{id}', ['\App\Controleur\MainController', 'listerEnTetes']);
 
 $app->get('/facture/lister', ['\App\Controleur\FactureController', 'lister']);
 $app->options('/facture/lister', ['\App\Controleur\MainController', 'listerEnTetes']);
 
 $app->get('/compteur/lister', ['\App\Controleur\CompteurController', 'lister']);
 $app->options('/compteur/lister', ['\App\Controleur\MainController', 'listerEnTetes']);
-
-$app->post('/facture/modifier/{id}', ['\App\Controleur\FactureController', 'modifier']);
-$app->options('/facture/modifier/{id}', ['\App\Controleur\MainController', 'listerEnTetes']);
 
 $app->run();

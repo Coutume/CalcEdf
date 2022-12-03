@@ -22,6 +22,7 @@
                   label="Date de la facture"
                   prepend-icon="mdi-calendar"
                   readonly
+                  :disabled="editMode === true"
                   v-bind="attrs"
                   v-on="on"
                   :rules="[regles.dateRenseignee]"
@@ -198,7 +199,7 @@
 <script>
 export default {
   name: "saisie-facture",
-  props: ["value"],
+  props: ["value", 'editMode'],
   data() {
     return {
       // Champs à saisir
