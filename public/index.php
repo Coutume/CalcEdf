@@ -21,7 +21,8 @@ MainController::initErrorRoutingMiddleware($app);
 $app->add(function (Request $request, RequestHandler $handler) {
     $response = $handler->handle($request);
     return $response->withHeader('Access-Control-Allow-Origin', '*')
-        ->withHeader('Access-Control-Allow-Headers', '*');
+        ->withHeader('Access-Control-Allow-Headers', '*')
+        ->withHeader('Access-Control-Allow-Methods', '*');
 });
 $app->get('/', ['\App\Controleur\MainController', 'home']);
 $app->get('/test', ['\App\Controleur\MainController', 'test']);
@@ -38,7 +39,11 @@ $app->options('/facture/modifier/{id}', ['\App\Controleur\MainController', 'list
 $app->get('/facture/lister', ['\App\Controleur\FactureController', 'lister']);
 $app->options('/facture/lister', ['\App\Controleur\MainController', 'listerEnTetes']);
 
+$app->delete('/facture/supprimer/{id}', ['\App\Controleur\FactureController', 'supprimer']);
+$app->options('/facture/supprimer/{id}', ['\App\Controleur\MainController', 'listerEnTetes']);
+
 $app->get('/compteur/lister', ['\App\Controleur\CompteurController', 'lister']);
 $app->options('/compteur/lister', ['\App\Controleur\MainController', 'listerEnTetes']);
+
 
 $app->run();

@@ -41,6 +41,7 @@
               </template>
               <template v-slot:item.actions="{ item }">
                 <v-btn text :to="'/edition/' + item.id">Modifier</v-btn>
+                <v-btn text @click="supprimer(item.id)">Supprimer</v-btn>
               </template>
             </v-data-table>
           </v-card-text>
@@ -144,6 +145,13 @@ export default {
         labels: this.labelsDate,
         datasets: this.datasetsConsoKw
       }
+    }
+  },
+  methods: {
+    supprimer(id)
+    {
+      this.mainStore.supprimerFacture(id)
+          .then(data => this.mainStore.getHistoFacture().then(data => this.factures = data))
     }
   },
   mounted() {

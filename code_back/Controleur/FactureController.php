@@ -83,9 +83,19 @@ class FactureController extends CommonController
         return $response;
     }
 
-    public function supprimer(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function supprimer(ServerRequestInterface $request, ResponseInterface $response, $id): ResponseInterface
     {
-        $response->getBody()->write("API de gestion des factures : supprimer. Non implémenté.");
+        $factureRepository = $this->entityManager->getRepository('\App\Entite\Facture');
+
+        $facture = $factureRepository->find($id);
+        if($facture == null)
+        {
+            throw new \Exception("Facture $id introuvable.");
+        }
+
+        $this->entityManager->remove($facture);
+        $this->entityManager->flush();
+
         return $response;
     }
 

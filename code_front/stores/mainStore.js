@@ -43,6 +43,21 @@ export default defineStore('main', {
                 loadingStore.finishLoading('Modification de la facture ' + id + ' ...');
             }
         },
+        async supprimerFacture(id)
+        {
+            const loadingStore = useLoadingStore();
+            const messageStore = useMessageStore();
+            try
+            {
+                loadingStore.beginLoading('Suppression de la facture ' + id + ' ...');
+                let data = await axios.delete(import.meta.env.VITE_URL_API + 'facture/supprimer/' + id);
+                messageStore.addMessage("Facture supprimée.", false, true);
+            }
+            finally
+            {
+                loadingStore.finishLoading('Suppression de la facture ' + id + ' ...');
+            }
+        },
         async getHistoFacture()
         {
             const loadingStore = useLoadingStore();
