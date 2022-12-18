@@ -7,7 +7,7 @@
       <v-container>
         <v-row>
           <v-col v-for="rp in recapPersonnes">
-            {{ rp.personne.nom }} <v-chip class="ma-2" color="primary" >{{ rp.total.toFixed(2) }} €</v-chip>
+            {{ rp.personne.prenom }} {{ rp.personne.nom }} <v-chip class="ma-2" color="primary" >{{ rp.total.toFixed(2) }} €</v-chip>
           </v-col>
         </v-row>
         <v-row>

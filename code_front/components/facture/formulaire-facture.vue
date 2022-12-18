@@ -55,22 +55,8 @@
               Consommation en kw
             </v-card-title>
             <v-card-text>
-              <v-text-field
-                  v-model="consoKwHp"
-                  label="Conso kw heures pleines"
-                  placeholder="Conso kw heures pleines"
-                  suffix="kw"
-                  :rules="[regles.kwRenseigne]"
-                  outlined
-              ></v-text-field>
-              <v-text-field
-                  v-model="consoKwHc"
-                  label="Conso kw heures creuses"
-                  placeholder="Conso kw heures creuses"
-                  suffix="kw"
-                  :rules="[regles.kwRenseigne]"
-                  outlined
-              ></v-text-field>
+              <saisie-kw :saisies.sync="consosKwHp" libelle="Conso kw heures pleines"></saisie-kw>
+              <saisie-kw :saisies.sync="consosKwHc" libelle="Conso kw heures creuses"></saisie-kw>
               <v-text-field
                   v-model="consoKwPantaRei"
                   label="Conso kw Panta Rei"
@@ -197,8 +183,11 @@
 </template>
 
 <script>
+import SaisieKw from "@/components/compteur/saisie-kw.vue";
+
 export default {
   name: "saisie-facture",
+  components: {SaisieKw},
   props: ["value", 'editMode'],
   data() {
     return {
@@ -206,6 +195,8 @@ export default {
       dateFacture: this.value.dateFacture,
       consoKwHp: this.value.consoKwHp,
       consoKwHc: this.value.consoKwHc,
+      consosKwHp: ['0'],
+      consosKwHc: ['0'],
       consoKwPantaRei: this.value.consoKwPantaRei,
       consoKwPiscine: this.value.consoKwPiscine,
       chargesTva5EurosAboHp: this.value.chargesTva5EurosAboHp,
@@ -234,6 +225,8 @@ export default {
         consoKwHc: this.consoKwHc,
         consoKwPantaRei: this.consoKwPantaRei,
         consoKwPiscine: this.consoKwPiscine,
+        consosKwHp: this.consosKwHp,
+        consosKwHc: this.consosKwHc,
         chargesTva5EurosAboHp: this.chargesTva5EurosAboHp,
         chargesTva5EurosContribAchemElec: this.chargesTva5EurosContribAchemElec,
         chargesTva20TaxeConsoFinale: this.chargesTva20TaxeConsoFinale,
