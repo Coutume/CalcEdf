@@ -240,7 +240,7 @@ export default {
       let consosKwHp = this.grouperKwCreditDebit(this.formData.consosKwHp);
       let consoKwHc = parseInt(this.formData.consoKwHc);
       let consosKwHc = this.grouperKwCreditDebit(this.formData.consosKwHc);
-      let totalKw = consoKwHc + consoKwHp;
+      let totalKw = consosKwHp.debit + consosKwHc.debit;
 
       console.log(consosKwHp, consosKwHc);
 
@@ -255,8 +255,8 @@ export default {
 
       let totalKwPrincipal = totalKw - totalKwPantaRei - totalKwPiscine;
 
-      let pourcentHp = consoKwHp / totalKw * 100;
-      let pourcentHc = consoKwHc / totalKw * 100;
+      let pourcentHp = consosKwHp.debit / totalKw * 100;
+      let pourcentHc = consosKwHc.debit / totalKw * 100;
 
       // calcul des parts pour les taxes & autres contributions
       let chargesTva5Part = this.partTva5;
@@ -282,6 +282,8 @@ export default {
           , pourcentHp, pourcentHc, prixKwHp, prixKwHc, totalKwPiscine);
 
       this.recapCompteurs.push(recapCompteurPrincipal, recapCompteurPantaRei, recapCompteurPiscine);
+      this.deductionsKwLigneBudgetaire(consosKwHp, consoKwHc, prixKwHp, prixKwHc);
+
       this.creerRecapsPersonne();
       this.formData.total = this.recapCompteurs.reduce((prev, rc) => prev + rc.total, 0);
 
@@ -291,7 +293,7 @@ export default {
     {
       return {
         debit: kwArray.filter(kw => kw > 0).reduce((prev, kw) => prev + parseInt(kw), 0),
-        credit: kwArray.filter(kw => kw < 0).reduce((prev, kw) => prev + parseInt(kw), 0)
+        credit: kwArray.filter(kw => kw < 0).reduce((prev, kw) => prev + parseInt(kw), 0) * -1
       }
     },
     creerRecapCompteur: function(compteur, consoKw, pourcentHp, pourcentHc, prixKwHp, prixKwHc, consoKwAvantDeduction)
@@ -324,11 +326,35 @@ export default {
       recapCompteur.lignesBudgetaires.push(
       {
         nom: nom,
-        montant: montant > 0 ? montant : 0
+        montant: montant
       });
 
       recapCompteur.total = recapCompteur.lignesBudgetaires.reduce((prevL, lb) => prevL + lb.montant, 0);
       recapCompteur.valeurPart = recapCompteur.total / recapCompteur.compteur.personnes.length;
+    },
+    deductionsKwLigneBudgetaire: function(consosKwHp, consosKwHc, prixKwHp, prixKwHc)
+    {
+      if(consosKwHp.credit > 0)
+      {
+        this.ajouterLigneBudgetaireDeduction(consosKwHp.credit, prixKwHp,
+            this.recapCompteurs.filter(c => c.consoKwHp > 0), 'heures pleines');
+      }
+
+      if(consosKwHc.credit > 0)
+      {
+        this.ajouterLigneBudgetaireDeduction(consosKwHc.credit, prixKwHc,
+            this.recapCompteurs.filter(c => c.consoKwHc > 0), 'heures creuses');
+      }
+    },
+    ajouterLigneBudgetaireDeduction: function(consosKwCredit, prixKw, recapCompteurAPrendreEnCompte, liblDeduction)
+    {
+      let debitParCompteur = consosKwCredit / recapCompteurAPrendreEnCompte.length;
+      let total = -(debitParCompteur * prixKw);
+      let totalTtc = total + (total * 200 / 100);
+
+      recapCompteurAPrendreEnCompte.forEach(c => {
+        this.ajouterLigneBudgetaire(c, 'Déduction rattrapage ' + liblDeduction, totalTtc);
+      });
     },
     creerRecapsPersonne()
     {

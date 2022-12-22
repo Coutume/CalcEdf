@@ -31,7 +31,7 @@ export default {
   props: ["recapCompteur"],
   computed: {
     listePersonnes: function() {
-      return this.recapCompteur.compteur.personnes.map(p => p.nom).join(', ');
+      return this.recapCompteur.compteur.personnes.map(p => p.prenom + ' ' + p.nom).join(', ');
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="no-padding">
     <v-row dense>
       <v-col>
         <h3>{{ libelle }}</h3>
@@ -62,7 +62,7 @@ export default {
   },
   watch: {
     saisiesKw: {
-      handler: function()
+      handler: function(nouv, anc)
       {
         this.$emit('update:saisies', this.formatKwObjectToArray(this.saisiesKw));
       },
@@ -74,5 +74,9 @@ export default {
 </script>
 
 <style scoped>
-
+.no-padding
+{
+  padding-left: 0;
+  padding-right: 0;
+}
 </style>
