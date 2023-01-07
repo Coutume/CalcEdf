@@ -34,24 +34,20 @@ class Facture
     private $dateFacture;
 
     /**
-     * @var integer
+     * @var integer[]
      */
-    #[Column(type: 'integer')]
+    #[Column(type: 'simple_array')]
     #[NotNull(message: ValidationMessage::VALEUR)]
-    #[Type(type: 'integer', message: ValidationMessage::KW_NOMBRE)]
-    #[Positive(message: ValidationMessage::KW_NOMBRE)]
     #[Groups(['facture'])]
-    private $consoKwHp;
+    private $consosKwHp;
 
     /**
-     * @var integer
+     * @var integer[]
      */
-    #[Column(type: 'integer')]
+    #[Column(type: 'simple_array')]
     #[NotNull(message: ValidationMessage::VALEUR)]
-    #[Type(type: 'integer', message: ValidationMessage::KW_NOMBRE)]
-    #[PositiveOrZero(message: ValidationMessage::KW_NOMBRE)]
     #[Groups(['facture'])]
-    private $consoKwHc;
+    private $consosKwHc;
 
     /**
      * @var float
@@ -165,33 +161,33 @@ class Facture
     /**
      * @return mixed
      */
-    public function getConsoKwHp()
+    public function getConsosKwHp()
     {
-        return $this->consoKwHp;
+        return $this->consosKwHp;
     }
 
     /**
-     * @param mixed $consoKwHp
+     * @param mixed $consosKwHp
      */
-    public function setConsoKwHp($consoKwHp): void
+    public function setConsosKwHp($consosKwHp): void
     {
-        $this->consoKwHp = $consoKwHp;
+        $this->consosKwHp = $consosKwHp;
     }
 
     /**
      * @return mixed
      */
-    public function getConsoKwHc()
+    public function getConsosKwHc()
     {
-        return $this->consoKwHc;
+        return $this->consosKwHc;
     }
 
     /**
-     * @param mixed $consoKwHc
+     * @param mixed $consosKwHc
      */
-    public function setConsoKwHc($consoKwHc): void
+    public function setConsosKwHc($consosKwHc): void
     {
-        $this->consoKwHc = $consoKwHc;
+        $this->consosKwHc = $consosKwHc;
     }
 
     /**

@@ -193,10 +193,8 @@ export default {
     return {
       // Champs à saisir
       dateFacture: this.value.dateFacture,
-      consoKwHp: this.value.consoKwHp,
-      consoKwHc: this.value.consoKwHc,
-      consosKwHp: ['0'],
-      consosKwHc: ['0'],
+      consosKwHp: this.value.consosKwHp,
+      consosKwHc: this.value.consosKwHc,
       consoKwPantaRei: this.value.consoKwPantaRei,
       consoKwPiscine: this.value.consoKwPiscine,
       chargesTva5EurosAboHp: this.value.chargesTva5EurosAboHp,
@@ -221,8 +219,6 @@ export default {
     {
       return {
         dateFacture: this.dateFacture,
-        consoKwHp: this.consoKwHp,
-        consoKwHc: this.consoKwHc,
         consoKwPantaRei: this.consoKwPantaRei,
         consoKwPiscine: this.consoKwPiscine,
         consosKwHp: this.consosKwHp,
@@ -257,8 +253,8 @@ export default {
     value:{
       deep: true,
       handler: function() {
-        this.consoKwHp = this.value.consoKwHp;
-        this.consoKwHc = this.value.consoKwHc;
+        this.consosKwHp = this.value.consosKwHp;
+        this.consosKwHc = this.value.consosKwHc;
         this.chargesTva5EurosAboHp = this.value.chargesTva5EurosAboHp;
         this.chargesTva5EurosContribAchemElec = this.value.chargesTva5EurosContribAchemElec;
         this.chargesTva20TaxeConsoFinale = this.value.chargesTva20TaxeConsoFinale;

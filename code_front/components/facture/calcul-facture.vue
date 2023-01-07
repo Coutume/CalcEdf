@@ -102,8 +102,6 @@ export default {
       default: function() {
         return {
           dateFacture: null,
-          consoKwHp: '0',
-          consoKwHc: '0',
           consoKwPantaRei: '0',
           consoKwPiscine: '0',
           consosKwHp: ['0'],
@@ -203,9 +201,9 @@ export default {
       this.dialogOcr = false;
       if(dialogData.getData)
       {
-        this.formData.consoKwHc = dialogData.data.kwHc;
+        this.formData.consosKwHc = [dialogData.data.kwHc];
         this.formData.prixKwHc = dialogData.data.prixKwHc;
-        this.formData.consoKwHp =dialogData.data.kwHp;
+        this.formData.consosKwHp = [dialogData.data.kwHp];
         this.formData.prixKwHp = dialogData.data.prixKwHp;
         this.formData.chargesTva5EurosAboHp = dialogData.data.tva5Abo;
         this.formData.chargesTva5EurosContribAchemElec = dialogData.data.tva5Contrib;
@@ -216,8 +214,8 @@ export default {
     formatFormData: function() {
       return {
         dateFacture: this.formData.dateFacture,
-        consoKwHp: parseInt(this.formData.consoKwHp),
-        consoKwHc: parseInt(this.formData.consoKwHc),
+        consosKwHp: this.parseIntArray(this.formData.consosKwHp),
+        consosKwHc: this.parseIntArray(this.formData.consosKwHc),
         consoKwPantaRei: parseInt(this.formData.consoKwPantaRei),
         consoKwPiscine: parseInt(this.formData.consoKwPiscine),
         chargesTva5EurosAboHp: parseFloat(this.formData.chargesTva5EurosAboHp.replace(',', '.')),
@@ -236,9 +234,7 @@ export default {
       this.recapCompteurs.splice(0);
 
       // Consommation
-      let consoKwHp = parseInt(this.formData.consoKwHp);
       let consosKwHp = this.grouperKwCreditDebit(this.formData.consosKwHp);
-      let consoKwHc = parseInt(this.formData.consoKwHc);
       let consosKwHc = this.grouperKwCreditDebit(this.formData.consosKwHc);
       let totalKw = consosKwHp.debit + consosKwHc.debit;
 
@@ -282,7 +278,7 @@ export default {
           , pourcentHp, pourcentHc, prixKwHp, prixKwHc, totalKwPiscine);
 
       this.recapCompteurs.push(recapCompteurPrincipal, recapCompteurPantaRei, recapCompteurPiscine);
-      this.deductionsKwLigneBudgetaire(consosKwHp, consoKwHc, prixKwHp, prixKwHc);
+      this.deductionsKwLigneBudgetaire(consosKwHp, consosKwHc, prixKwHp, prixKwHc);
 
       this.creerRecapsPersonne();
       this.formData.total = this.recapCompteurs.reduce((prev, rc) => prev + rc.total, 0);
@@ -295,6 +291,10 @@ export default {
         debit: kwArray.filter(kw => kw > 0).reduce((prev, kw) => prev + parseInt(kw), 0),
         credit: kwArray.filter(kw => kw < 0).reduce((prev, kw) => prev + parseInt(kw), 0) * -1
       }
+    },
+    parseIntArray(arr)
+    {
+      return arr.map(nb => parseInt(nb));
     },
     creerRecapCompteur: function(compteur, consoKw, pourcentHp, pourcentHc, prixKwHp, prixKwHc, consoKwAvantDeduction)
     {

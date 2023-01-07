@@ -106,8 +106,8 @@ class FactureController extends CommonController
         $date = \DateTime::createFromFormat('Y-m-d', $factureJson->saisies->dateFacture);
 
         $facture->setDateFacture(($date !== false ? $date->setTime(0, 0) : null));
-        $facture->setConsoKwHp($factureJson->saisies->consoKwHp);
-        $facture->setConsoKwHc($factureJson->saisies->consoKwHc);
+        $facture->setConsosKwHp($factureJson->saisies->consosKwHp);
+        $facture->setConsosKwHc($factureJson->saisies->consosKwHc);
         $facture->setPrixKwHp($factureJson->saisies->prixKwHp);
         $facture->setPrixKwHc($factureJson->saisies->prixKwHc);
         $facture->setChargesTva5EurosAboHp($factureJson->saisies->chargesTva5EurosAboHp);

@@ -23,8 +23,8 @@ export default {
         return {
           id: this.facture.id,
           dateFacture: this.facture.dateFacture,
-          consoKwHp: this.facture.consoKwHp + '',
-          consoKwHc: this.facture.consoKwHc + '',
+          consosKwHp: this.formatTableauNombres(this.facture.consosKwHp),
+          consosKwHc: this.formatTableauNombres(this.facture.consosKwHc),
           consoKwPantaRei: this.formaterNombre(this.facture.consommationsCompteur.find(cc => cc.compteur.id === 2).consoKwTotal),
           consoKwPiscine: this.formaterNombre(this.facture.consommationsCompteur.find(cc => cc.compteur.id === 3).consoKwTotal),
           chargesTva5EurosAboHp: this.formaterNombre(this.facture.chargesTva5EurosAboHp),
@@ -44,6 +44,10 @@ export default {
     formaterNombre(nombre)
     {
       return (nombre + '').replace('.', ',');
+    },
+    formatTableauNombres(nombres)
+    {
+      return nombres.map(nb => this.formaterNombre(nb));
     }
   },
   beforeRouteEnter (to, from, next) {

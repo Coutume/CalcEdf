@@ -13,8 +13,8 @@ class FactureRepository extends EntityRepository
         $facture->setConsommationsCompteur($nouvFacture->getConsommationsCompteur());
         $facture->getConsommationsPersonne()->clear();
         $facture->setConsommationsPersonne($nouvFacture->getConsommationsPersonne());
-        $facture->setConsoKwHp($nouvFacture->getConsoKwHp());
-        $facture->setConsoKwHc($nouvFacture->getConsoKwHc());
+        $facture->setConsosKwHp($nouvFacture->getConsosKwHp());
+        $facture->setConsosKwHc($nouvFacture->getConsosKwHc());
         $facture->setPrixKwHp($nouvFacture->getPrixKwHp());
         $facture->setPrixKwHc($nouvFacture->getPrixKwHc());
         $facture->setChargesTva5EurosAboHp($nouvFacture->getChargesTva5EurosAboHp());
