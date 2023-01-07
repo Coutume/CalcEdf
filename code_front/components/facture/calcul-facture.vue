@@ -350,7 +350,7 @@ export default {
     {
       let debitParCompteur = consosKwCredit / recapCompteurAPrendreEnCompte.length;
       let total = -(debitParCompteur * prixKw);
-      let totalTtc = total + (total * 200 / 100);
+      let totalTtc = total + (total * 20 / 100);
 
       recapCompteurAPrendreEnCompte.forEach(c => {
         this.ajouterLigneBudgetaire(c, 'Déduction rattrapage ' + liblDeduction, totalTtc);
