@@ -104,6 +104,13 @@ class Facture
     private $chargesTva20ContribServPub;
 
     /**
+     * @var mixed
+     */
+    #[Column(type: 'json', nullable: true)]
+    #[Groups(['facture'])]
+    private $autresCharges;
+
+    /**
      * @var float
      */
     #[Column(type: 'float')]
@@ -284,6 +291,22 @@ class Facture
     public function setChargesTva20ContribServPub($chargesTva20ContribServPub): void
     {
         $this->chargesTva20ContribServPub = $chargesTva20ContribServPub;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAutresCharges(): mixed
+    {
+        return $this->autresCharges;
+    }
+
+    /**
+     * @param mixed $autresCharges
+     */
+    public function setAutresCharges(mixed $autresCharges): void
+    {
+        $this->autresCharges = $autresCharges;
     }
 
     /**

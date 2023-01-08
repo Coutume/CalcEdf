@@ -114,6 +114,7 @@ class FactureController extends CommonController
         $facture->setChargesTva5EurosContribAchemElec($factureJson->saisies->chargesTva5EurosContribAchemElec);
         $facture->setChargesTva20TaxeConsoFinale($factureJson->saisies->chargesTva20TaxeConsoFinale);
         $facture->setChargesTva20ContribServPub($factureJson->saisies->chargesTva20ContribServPub);
+        $facture->setAutresCharges($factureJson->saisies->autresCharges);
         $facture->setTotal(str_replace(',', '.', $factureJson->saisies->total));
 
         foreach ($factureJson->compteurs as $compteurJson)

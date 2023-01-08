@@ -21,6 +21,7 @@ class FactureRepository extends EntityRepository
         $facture->setChargesTva5EurosContribAchemElec($nouvFacture->getChargesTva5EurosContribAchemElec());
         $facture->setChargesTva20TaxeConsoFinale($nouvFacture->getChargesTva20TaxeConsoFinale());
         $facture->setChargesTva20ContribServPub($nouvFacture->getChargesTva20ContribServPub());
+        $facture->setAutresCharges($nouvFacture->getAutresCharges());
         $facture->setTotal($nouvFacture->getTotal());
     }
 }

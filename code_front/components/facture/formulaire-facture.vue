@@ -178,16 +178,29 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col cols="12">
+          <v-card outlined>
+            <v-card-title>
+              Autres charges
+            </v-card-title>
+            <v-card-text>
+              <saisie-charge :saisies.sync="autresCharges"></saisie-charge>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-container>
   </v-form>
 </template>
 
 <script>
 import SaisieKw from "@/components/compteur/saisie-kw.vue";
+import SaisieCharge from "@/components/charge/saisie-charge.vue";
 
 export default {
   name: "saisie-facture",
-  components: {SaisieKw},
+  components: {SaisieCharge, SaisieKw},
   props: ["value", 'editMode'],
   data() {
     return {
@@ -203,6 +216,7 @@ export default {
       chargesTva20ContribServPub: this.value.chargesTva20ContribServPub,
       prixKwHp: this.value.prixKwHp,
       prixKwHc: this.value.prixKwHc,
+      autresCharges: this.value.autresCharges,
 
       menuDateFacture: false,
       valide: false,
@@ -229,6 +243,7 @@ export default {
         chargesTva20ContribServPub: this.chargesTva20ContribServPub,
         prixKwHp: this.prixKwHp,
         prixKwHc: this.prixKwHc,
+        autresCharges: this.autresCharges,
       }
     }
   },
@@ -261,6 +276,7 @@ export default {
         this.chargesTva20ContribServPub = this.value.chargesTva20ContribServPub;
         this.prixKwHp = this.value.prixKwHp;
         this.prixKwHc = this.value.prixKwHc;
+        this.autresCharges = this.value.autresCharges;
       }
     }
   }

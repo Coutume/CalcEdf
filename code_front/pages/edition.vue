@@ -31,6 +31,7 @@ export default {
           chargesTva5EurosContribAchemElec: this.formaterNombre(this.facture.chargesTva5EurosContribAchemElec),
           chargesTva20TaxeConsoFinale: this.formaterNombre(this.facture.chargesTva20TaxeConsoFinale),
           chargesTva20ContribServPub: this.formaterNombre(this.facture.chargesTva20ContribServPub),
+          autresCharges: this.facture.autresCharges,
           prixKwHp: this.formaterNombre(this.facture.prixKwHp),
           prixKwHc: this.formaterNombre(this.facture.prixKwHc),
           total: this.formaterNombre(this.facture.total),

@@ -112,6 +112,7 @@ export default {
           chargesTva20ContribServPub: '0',
           prixKwHp: '0',
           prixKwHc: '0',
+          autresCharges: [],
           total: 0
         }
       }
@@ -141,11 +142,13 @@ export default {
     partTva5: function() { // Prix d'une part pour les taxes à 5,5%
       let chargesTva5EurosAboHp = this.formData.chargesTva5EurosAboHp;
       let chargesTva5EurosContribAchemElec = this.formData.chargesTva5EurosContribAchemElec;
+      let autresCharges = this.formData.autresCharges.filter(ac => ac.tva === 5.5);
       if(this.formValide)
       {
         chargesTva5EurosAboHp = parseFloat(chargesTva5EurosAboHp.replace(',', '.'));
         chargesTva5EurosContribAchemElec = parseFloat(chargesTva5EurosContribAchemElec.replace(',', '.'));
-        let chargesTva5TotalHt = chargesTva5EurosAboHp + chargesTva5EurosContribAchemElec;
+        let chargesTva5TotalHt = chargesTva5EurosAboHp + chargesTva5EurosContribAchemElec
+            + autresCharges.reduce((prev, ac) => prev + parseFloat(ac.montant.replace(',', '.')), 0);
         let chargesTva5TotalTtc = chargesTva5TotalHt + (chargesTva5TotalHt * 5.5 / 100);
         return chargesTva5TotalTtc / this.nbPartTaxes;
       }
@@ -154,11 +157,13 @@ export default {
     partTva20: function() { // Prix d'une part pour les taxes à 20%
       let chargesTva20TaxeConsoFinale = this.formData.chargesTva20TaxeConsoFinale;
       let chargesTva20ContribServPub = this.formData.chargesTva20ContribServPub;
+      let autresCharges = this.formData.autresCharges.filter(ac => ac.tva === 20);
       if(this.formValide)
       {
         chargesTva20TaxeConsoFinale = parseFloat(chargesTva20TaxeConsoFinale.replace(',', '.'));
         chargesTva20ContribServPub = parseFloat(chargesTva20ContribServPub.replace(',', '.'));
-        let chargesTva20TotalHt = chargesTva20TaxeConsoFinale + chargesTva20ContribServPub;
+        let chargesTva20TotalHt = chargesTva20TaxeConsoFinale + chargesTva20ContribServPub
+            + autresCharges.reduce((prev, ac) => prev + parseFloat(ac.montant.replace(',', '.')), 0);
         let chargesTva20TotalTtc = chargesTva20TotalHt + (chargesTva20TotalHt * 20 / 100);
         return chargesTva20TotalTtc / this.nbPartTaxes;
       }
@@ -224,6 +229,7 @@ export default {
         chargesTva20ContribServPub: parseFloat(this.formData.chargesTva20ContribServPub.replace(',', '.')),
         prixKwHp: parseFloat(this.formData.prixKwHp.replace(',', '.')),
         prixKwHc: parseFloat(this.formData.prixKwHc.replace(',', '.')),
+        autresCharges: this.formData.autresCharges,
         total: this.formData.total
       }
     },
@@ -289,7 +295,8 @@ export default {
     {
       return {
         debit: kwArray.filter(kw => kw > 0).reduce((prev, kw) => prev + parseInt(kw), 0),
-        credit: kwArray.filter(kw => kw < 0).reduce((prev, kw) => prev + parseInt(kw), 0) * -1
+        credit: kwArray.filter(kw => kw < 0).reduce((prev, kw) => prev + parseInt(kw), 0) * -1,
+        total: kwArray.reduce((prev, kw) => prev + parseInt(kw), 0)
       }
     },
     parseIntArray(arr)
@@ -308,6 +315,8 @@ export default {
         compteur : compteur,
         consoKwHp: consoKwHp,
         consoKwHc: consoKwHc,
+        pourcentHp: consoKwHp / consoKw * 100,
+        pourcentHc: consoKwHc / consoKw * 100,
         consoKwTotal: consoKwAvantDeduction,
         consoEurosHp: consoEurosHp > 0 ? consoEurosHp : 0,
         consoEurosHc: consoEurosHc > 0 ? consoEurosHc : 0,
@@ -334,27 +343,27 @@ export default {
     },
     deductionsKwLigneBudgetaire: function(consosKwHp, consosKwHc, prixKwHp, prixKwHc)
     {
-      if(consosKwHp.credit > 0)
+      this.recapCompteurs.filter(rc => rc.consoKwHp > 0).forEach((rc, i, rcs) =>
       {
-        this.ajouterLigneBudgetaireDeduction(consosKwHp.credit, prixKwHp,
-            this.recapCompteurs.filter(c => c.consoKwHp > 0), 'heures pleines');
-      }
+        if(consosKwHp.credit > 0)
+        {
+          this.ajouterLigneBudgetaireDeduction(consosKwHp.credit * (rc.consoKwHp / consosKwHp.debit * 100) / 100, prixKwHp,
+              rc, 'heures pleines');
+        }
 
-      if(consosKwHc.credit > 0)
-      {
-        this.ajouterLigneBudgetaireDeduction(consosKwHc.credit, prixKwHc,
-            this.recapCompteurs.filter(c => c.consoKwHc > 0), 'heures creuses');
-      }
+        if(consosKwHc.credit > 0)
+        {
+          this.ajouterLigneBudgetaireDeduction(consosKwHc.credit * (rc.consoKwHc / consosKwHc.debit * 100) / 100, prixKwHc,
+              rc, 'heures creuses');
+        }
+      });
     },
     ajouterLigneBudgetaireDeduction: function(consosKwCredit, prixKw, recapCompteurAPrendreEnCompte, liblDeduction)
     {
-      let debitParCompteur = consosKwCredit / recapCompteurAPrendreEnCompte.length;
-      let total = -(debitParCompteur * prixKw);
+      let total = -(consosKwCredit * prixKw);
       let totalTtc = total + (total * 20 / 100);
 
-      recapCompteurAPrendreEnCompte.forEach(c => {
-        this.ajouterLigneBudgetaire(c, 'Déduction rattrapage ' + liblDeduction, totalTtc);
-      });
+      this.ajouterLigneBudgetaire(recapCompteurAPrendreEnCompte, 'Déduction rattrapage ' + liblDeduction, totalTtc);
     },
     creerRecapsPersonne()
     {
