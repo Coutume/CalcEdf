@@ -12,7 +12,7 @@
     </v-app-bar>
     <v-navigation-drawer
         v-model="menuPrincipal"
-        absolute
+        fixed
         temporary
         app
     >
