@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       regles: {
-        prixRenseigne: function(value) { return (/^[0-9]+(,[0-9]+)?$/.test(value))
+        prixRenseigne: function(value) { return (/^-?[0-9]+(,[0-9]+)?$/.test(value))
             || 'Le montant renseigné doit être un nombre'}
       },
     }
