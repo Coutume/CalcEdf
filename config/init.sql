@@ -1,3 +1,6 @@
+-- L'utilisateur BDD nécessite d'avoir en search_path le schéma par défaut utilisé !
+-- Exemple : si le schéma contenant les tables de l'app se nomme core, l'utilisateur doit avoir search_path = core
+
 -- Personnes
 insert into personne (id, nom, prenom) VALUES (nextval('personne_id_seq'), 'ACHARD', 'Christophe');
 insert into personne (id, nom, prenom) VALUES (nextval('personne_id_seq'), 'ESPEJO', 'Raphael');
