@@ -139,6 +139,15 @@ export default {
     nbPartTaxes: function() {
       return this.mainStore.compteurs.filter(c => c.partageTaxes === true).length;
     },
+    partSansTva: function() {
+      let autresCharges = this.formData.autresCharges.filter(ac => ac.tva === 0);
+      if(this.formValide)
+      {
+        return autresCharges.reduce((prev, ac) => prev + parseFloat(ac.montant.replace(',', '.')), 0)
+            / this.nbPartTaxes;
+      }
+      return null;
+    },
     partTva5: function() { // Prix d'une part pour les taxes à 5,5%
       let chargesTva5EurosAboHp = this.formData.chargesTva5EurosAboHp;
       let chargesTva5EurosContribAchemElec = this.formData.chargesTva5EurosContribAchemElec;
@@ -263,6 +272,7 @@ export default {
       // calcul des parts pour les taxes & autres contributions
       let chargesTva5Part = this.partTva5;
       let chargesTva20Part = this.partTva20;
+      let chargesTva0 = this.partSansTva;
 
       // Calcul de la conso hp / hc compteur principal
       let compteurPrincipal = compteurs.find(c => c.id === 1);
@@ -270,6 +280,7 @@ export default {
           , pourcentHp, pourcentHc, prixKwHp, prixKwHc, totalKw);
       this.ajouterLigneBudgetaire(recapCompteurPrincipal, 'Taxes TVA 5,5%', chargesTva5Part);
       this.ajouterLigneBudgetaire(recapCompteurPrincipal, 'Taxes TVA 20%', chargesTva20Part);
+      this.ajouterLigneBudgetaire(recapCompteurPrincipal, 'Taxes TVA 0', chargesTva0);
 
       // Calcul de la conso hp / hc compteur Panta Rei
       let compteurPantaRei = compteurs.find(c => c.id === 2);
@@ -277,6 +288,7 @@ export default {
           , pourcentHp, pourcentHc, prixKwHp, prixKwHc, consoKwPantaRei);
       this.ajouterLigneBudgetaire(recapCompteurPantaRei, 'Taxes TVA 5,5%', chargesTva5Part);
       this.ajouterLigneBudgetaire(recapCompteurPantaRei, 'Taxes TVA 20%', chargesTva20Part);
+      this.ajouterLigneBudgetaire(recapCompteurPantaRei, 'Taxes TVA 0', chargesTva0);
 
       // Calcul de la conso hp / hc compteur Piscine
       let compteurPiscine = compteurs.find(c => c.id === 3);

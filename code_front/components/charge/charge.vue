@@ -56,6 +56,10 @@ export default {
     tvas: function() {
       return [
         {
+          libelle: 'TVA 0',
+          valeur: 0
+        },
+        {
           libelle: 'TVA 5,5 %',
           valeur: 5.5
         },
